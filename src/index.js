@@ -1,15 +1,25 @@
 import { ratBot } from "./bots/ratBot.js";
 import { copyTemplate } from "./copyTemplate.js";
 import { readFileSync } from "fs";
+import { logger } from "./logger.js";
 
-copyTemplate();
+copyTemplate(logger);
 
 const jsonTxt = readFileSync("appSettings.json", "utf8");
 
-const settings = JSON.parse(jsonTxt);
+let settings;
+
+try {
+  settings = JSON.parse(jsonTxt);
+} catch (err) {
+  logger.error("failed to parse appSettings.json");
+  logger.log("exiting");
+  return;
+}
 
 const ratBotToken = settings.botTokens?.ratBot;
 
 if (ratBotToken) {
-  const ratBot1 = ratBot.create(ratBotToken);
+  logger.log("starting ratBot");
+  ratBot.create(ratBotToken);
 }
