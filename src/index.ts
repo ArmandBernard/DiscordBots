@@ -1,7 +1,7 @@
-import { ratBot } from "./bots/ratBot.js";
-import { copyTemplate } from "./copyTemplate.js";
+import { ratBot } from "./bots/ratBot";
+import { copyTemplate } from "./copyTemplate";
 import { readFileSync } from "fs";
-import { Logger } from "./logger.js";
+import { Logger } from "./Logger";
 
 main();
 
