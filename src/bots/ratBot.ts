@@ -7,6 +7,10 @@ export class ratBot {
   client: Discord.Client;
   logger: ILogger;
 
+  static containsRat(message: string): boolean {
+    return regex.exec(message) != null;
+  }
+
   constructor(client: Discord.Client, token: string, logger: ILogger) {
     this.client = client;
     this.logger = logger;
@@ -18,7 +22,7 @@ export class ratBot {
     // when a message is created
     client.on("messageCreate", (message) => {
       // if it contains rat
-      if (regex.exec(message.content)) {
+      if (ratBot.containsRat(message.content)) {
         try {
           // post the rat gif
           message.channel.send("https://i.imgur.com/KqvqLg3.gif");
