@@ -1,16 +1,20 @@
-import { ratBot } from "./bots/ratBot";
+import { RatBot } from "./bots/ratBot";
 import { copyTemplate } from "./copyTemplate";
 import { readFileSync } from "fs";
 import { Logger } from "./Logger";
 import { ILogger } from "./ILogger";
 
 export class Program {
+  /**
+   * Program entry point
+   * @returns
+   */
   static main() {
     const logger = new Logger();
 
     copyTemplate(logger);
 
-    const settings = Program.loadConfig(logger);
+    const settings = Program.loadSettings(logger);
     if (!settings) {
       logger.log("exiting");
       return;
@@ -19,12 +23,16 @@ export class Program {
     const ratBotToken = settings.botTokens?.ratBot;
 
     if (ratBotToken) {
-      logger.log("starting ratBot");
-      ratBot.create(ratBotToken, logger);
+      new RatBot({ token: ratBotToken, logger });
     }
   }
 
-  static loadConfig(logger: ILogger): IAppSettings | undefined {
+  /**
+   * Load the settings file for the application
+   * @param logger
+   * @returns the settings file
+   */
+  static loadSettings(logger: ILogger): IAppSettings | undefined {
     const jsonTxt = readFileSync("appSettings.json", "utf8");
 
     try {
@@ -38,6 +46,9 @@ export class Program {
 
 Program.main();
 
+/**
+ * The expected shape of the applications settings file
+ */
 interface IAppSettings {
   botTokens: {
     ratBot: string;
