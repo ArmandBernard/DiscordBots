@@ -11,10 +11,6 @@ const intents: GatewayIntentBits[] = [
 ];
 
 export class RatBot extends BotBase {
-  static containsRat(message: string): boolean {
-    return regex.exec(message) != null;
-  }
-
   constructor(token: string, logger: ILogger) {
     super({ name: "ratBot", token, logger, intents });
 
@@ -33,5 +29,10 @@ export class RatBot extends BotBase {
     });
 
     this.login();
+  }
+
+  // check if the message contains "rat"
+  static containsRat(message: string): boolean {
+    return regex.exec(message) != null;
   }
 }
