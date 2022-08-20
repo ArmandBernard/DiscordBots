@@ -4,7 +4,7 @@
   "description": "A repo for all my discord bots",
   "scripts": {
     "start": "ts-node-esm src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "eslint --ext .js,.ts . && tsc --noemit"
   },
   "author": "ArmandBernard",
