@@ -53,9 +53,16 @@ export abstract class BotBase {
     this.token = props.token;
     this.name = props.name;
 
-    const client = new Discord.Client({
-      intents: new IntentsBitField(props.intents),
-    });
+    let client: Discord.Client;
+    try {
+      client = new Discord.Client({
+        intents: new IntentsBitField(props.intents),
+      });
+    } catch (err) {
+      this.logger.error(`failed to create client for ${this.name}`);
+      this.logger.error((err as Error).message);
+      throw err;
+    }
 
     this.client = client;
 
