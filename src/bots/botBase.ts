@@ -60,7 +60,7 @@ export abstract class BotBase {
     this.client = client;
 
     client.on("ready", () => {
-      this.logger.log(`${this.name} started successfully`);
+      this.logger.log(`${this.name} logged in successfully`);
     });
   }
 
@@ -70,6 +70,7 @@ export abstract class BotBase {
    */
   login() {
     try {
+      this.logger.log(`logging in as ${this.name}`);
       this.client.login(this.token);
       this.loggedIn = true;
     } catch (err) {
