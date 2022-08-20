@@ -20,7 +20,7 @@ export class Program {
 
     if (ratBotToken) {
       logger.log("starting ratBot");
-      ratBot.create(ratBotToken);
+      ratBot.create(ratBotToken, logger);
     }
   }
 
