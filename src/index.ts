@@ -2,30 +2,44 @@ import { ratBot } from "./bots/ratBot";
 import { copyTemplate } from "./copyTemplate";
 import { readFileSync } from "fs";
 import { Logger } from "./Logger";
+import { ILogger } from "./ILogger";
 
-main();
+export class Program {
+  static main() {
+    const logger = new Logger();
 
-function main() {
-  const logger = new Logger();
+    copyTemplate(logger);
 
-  copyTemplate(logger);
+    const settings = Program.loadConfig(logger);
+    if (!settings) {
+      logger.log("exiting");
+      return;
+    }
 
-  const jsonTxt = readFileSync("appSettings.json", "utf8");
+    const ratBotToken = settings.botTokens?.ratBot;
 
-  let settings;
-
-  try {
-    settings = JSON.parse(jsonTxt);
-  } catch (err) {
-    logger.error("failed to parse appSettings.json");
-    logger.log("exiting");
-    return;
+    if (ratBotToken) {
+      logger.log("starting ratBot");
+      ratBot.create(ratBotToken);
+    }
   }
 
-  const ratBotToken = settings.botTokens?.ratBot;
+  static loadConfig(logger: ILogger): IAppSettings | undefined {
+    const jsonTxt = readFileSync("appSettings.json", "utf8");
 
-  if (ratBotToken) {
-    logger.log("starting ratBot");
-    ratBot.create(ratBotToken);
+    try {
+      return JSON.parse(jsonTxt);
+    } catch (err) {
+      logger.error("failed to parse appSettings.json");
+      return undefined;
+    }
   }
+}
+
+Program.main();
+
+interface IAppSettings {
+  botTokens: {
+    ratBot: string;
+  };
 }
