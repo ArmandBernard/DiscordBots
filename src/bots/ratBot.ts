@@ -1,4 +1,9 @@
-import { ChannelType, GatewayIntentBits, IntentsBitField } from "discord.js";
+import {
+  ChannelType,
+  GatewayIntentBits,
+  IntentsBitField,
+  Message,
+} from "discord.js";
 import { ILogger } from "../ILogger";
 import { BotBase } from "./botBase";
 
@@ -37,23 +42,32 @@ export class RatBot extends BotBase {
     this.client.on("messageCreate", (message) => {
       // if it contains rat
       if (RatBot.containsRat(message.content)) {
-        try {
-          // post the rat gif
-          message.channel.send("https://i.imgur.com/KqvqLg3.gif");
-
-          if (message.channel.type !== ChannelType.DM) {
-            this.logger.log(`posted a reply in ${message.channel.name}`);
-          } else {
-            this.logger.log("posted a reply to a user in DMs");
-          }
-        } catch (err) {
-          this.logger.error("failed to post reply");
-          this.logger.error((err as Error).message);
-        }
+        // reply with the rat gif
+        this.replyWithGif(message);
       }
     });
 
     this.login();
+  }
+
+  /**
+   * Reply to a user's message with a gif of a spinning rat
+   * @param message the message to reply to
+   */
+  replyWithGif(message: Message) {
+    try {
+      // post the rat gif
+      message.channel.send("https://i.imgur.com/KqvqLg3.gif");
+
+      if (message.channel.type !== ChannelType.DM) {
+        this.logger.log(`posted a reply in ${message.channel.name}`);
+      } else {
+        this.logger.log("posted a reply to a user in DMs");
+      }
+    } catch (err) {
+      this.logger.error("failed to post reply");
+      this.logger.error((err as Error).message);
+    }
   }
 
   /**
