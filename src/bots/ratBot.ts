@@ -1,5 +1,7 @@
 import Discord, { ClientOptions } from "discord.js";
 
+const regex = /\brat\b/i;
+
 export class ratBot {
   client: Discord.Client;
   constructor(client: Discord.Client) {
@@ -16,6 +18,15 @@ export class ratBot {
     });
 
     client.login(token);
+
+    // when a message is created
+    client.on("messageCreate", (message) => {
+      // if it contains rat
+      if (regex.exec(message.content)) {
+        // post the rat gif
+        message.channel.send("https://i.imgur.com/KqvqLg3.gif");
+      }
+    });
 
     return bot;
   }
