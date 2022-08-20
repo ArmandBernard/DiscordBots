@@ -3,6 +3,7 @@ import { copyTemplate } from "./copyTemplate";
 import { readFileSync } from "fs";
 import { Logger } from "./Logger";
 import { ILogger } from "./ILogger";
+import { WeatherBot } from "./bots/weatherBot";
 
 export class Program {
   /**
@@ -20,10 +21,21 @@ export class Program {
       return;
     }
 
-    const ratBotToken = settings.botTokens?.ratBot;
+    const ratBotToken = settings.botTokens.ratBot;
 
     if (ratBotToken) {
       new RatBot({ token: ratBotToken, logger });
+    }
+
+    const weatherBotToken = settings.botTokens.weatherBot;
+    const weatherAPIToken = settings.botTokens.weatherAPIToken;
+
+    if (weatherBotToken && weatherAPIToken) {
+      new WeatherBot({
+        token: weatherBotToken,
+        weatherKey: weatherAPIToken,
+        logger,
+      });
     }
   }
 
@@ -51,6 +63,8 @@ Program.main();
  */
 interface IAppSettings {
   botTokens: {
-    ratBot: string;
+    ratBot: string | undefined;
+    weatherBot: string | undefined;
+    weatherAPIToken: string | undefined;
   };
 }
