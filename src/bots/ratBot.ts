@@ -1,23 +1,19 @@
 import Discord, { ClientOptions } from "discord.js";
+import { ILogger } from "../ILogger";
 
 const regex = /\brat\b/i;
 
 export class ratBot {
   client: Discord.Client;
-  constructor(client: Discord.Client) {
+  logger: ILogger;
+
+  constructor(client: Discord.Client, token: string, logger: ILogger) {
     this.client = client;
-  }
-
-  static create(token: string) {
-    const client = new Discord.Client({} as ClientOptions);
-
-    const bot = new ratBot(client);
+    this.logger = logger;
 
     client.on("ready", () => {
-      console.log("bot started");
+      logger.log("bot started");
     });
-
-    client.login(token);
 
     // when a message is created
     client.on("messageCreate", (message) => {
@@ -28,6 +24,12 @@ export class ratBot {
       }
     });
 
-    return bot;
+    client.login(token);
+  }
+
+  static create(token: string, logger: ILogger) {
+    const client = new Discord.Client({} as ClientOptions);
+
+    return new ratBot(client, token, logger);
   }
 }
