@@ -1,4 +1,4 @@
-import { ratBot } from "./bots/ratBot";
+import { RatBot } from "./bots/ratBot";
 import { copyTemplate } from "./copyTemplate";
 import { readFileSync } from "fs";
 import { Logger } from "./Logger";
@@ -19,8 +19,7 @@ export class Program {
     const ratBotToken = settings.botTokens?.ratBot;
 
     if (ratBotToken) {
-      logger.log("starting ratBot");
-      ratBot.create(ratBotToken, logger);
+      new RatBot(ratBotToken, logger);
     }
   }
 

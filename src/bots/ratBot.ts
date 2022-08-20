@@ -1,34 +1,27 @@
-import Discord, { IntentsBitField } from "discord.js";
+import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { ILogger } from "../ILogger";
+import { BotBase } from "./botBase";
 
 const regex = /\brat\b/i;
 
-const intents = [
+const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
   IntentsBitField.Flags.GuildMessages,
   IntentsBitField.Flags.MessageContent,
 ];
 
-export class ratBot {
-  client: Discord.Client;
-  logger: ILogger;
-
+export class RatBot extends BotBase {
   static containsRat(message: string): boolean {
     return regex.exec(message) != null;
   }
 
-  constructor(client: Discord.Client, token: string, logger: ILogger) {
-    this.client = client;
-    this.logger = logger;
-
-    client.on("ready", () => {
-      logger.log("bot started");
-    });
+  constructor(token: string, logger: ILogger) {
+    super({ name: "ratBot", token, logger, intents });
 
     // when a message is created
-    client.on("messageCreate", (message) => {
+    this.client.on("messageCreate", (message) => {
       // if it contains rat
-      if (ratBot.containsRat(message.content)) {
+      if (RatBot.containsRat(message.content)) {
         try {
           // post the rat gif
           message.channel.send("https://i.imgur.com/KqvqLg3.gif");
@@ -39,19 +32,6 @@ export class ratBot {
       }
     });
 
-    try {
-      client.login(token);
-    } catch (err) {
-      logger.error("failed to log in");
-      logger.error((err as Error).message);
-    }
-  }
-
-  static create(token: string, logger: ILogger) {
-    const client = new Discord.Client({
-      intents: new IntentsBitField(intents),
-    });
-
-    return new ratBot(client, token, logger);
+    this.login();
   }
 }
