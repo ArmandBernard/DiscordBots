@@ -1,4 +1,4 @@
-import { GatewayIntentBits, IntentsBitField } from "discord.js";
+import { ChannelType, GatewayIntentBits, IntentsBitField } from "discord.js";
 import { ILogger } from "../ILogger";
 import { BotBase } from "./botBase";
 
@@ -40,8 +40,14 @@ export class RatBot extends BotBase {
         try {
           // post the rat gif
           message.channel.send("https://i.imgur.com/KqvqLg3.gif");
+
+          if (message.channel.type !== ChannelType.DM) {
+            this.logger.log(`posted a reply in ${message.channel.name}`);
+          } else {
+            this.logger.log("posted a reply to a user in DMs");
+          }
         } catch (err) {
-          this.logger.error("failed to post message");
+          this.logger.error("failed to post reply");
           this.logger.error((err as Error).message);
         }
       }
