@@ -1,7 +1,12 @@
-import Discord, { ClientOptions } from "discord.js";
+import Discord, { IntentsBitField } from "discord.js";
 import { ILogger } from "../ILogger";
 
 const regex = /\brat\b/i;
+
+const intents = [
+  IntentsBitField.Flags.GuildMessages,
+  IntentsBitField.Flags.MessageContent,
+];
 
 export class ratBot {
   client: Discord.Client;
@@ -42,7 +47,7 @@ export class ratBot {
   }
 
   static create(token: string, logger: ILogger) {
-    const client = new Discord.Client({} as ClientOptions);
+    const client = new Discord.Client({ intents: intents });
 
     return new ratBot(client, token, logger);
   }
