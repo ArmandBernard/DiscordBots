@@ -10,9 +10,28 @@ const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.MessageContent,
 ];
 
+interface RatBotProps {
+  /**
+   * The token the bot will use to log in
+   */
+  token: string;
+  /**
+   * The logger the bot will use to log messages
+   */
+  logger: ILogger;
+}
+
+/**
+ * A bot that will reply to messages containing the word "rat" with a gif of a
+ * spinning rat. Fun.
+ */
 export class RatBot extends BotBase {
-  constructor(token: string, logger: ILogger) {
-    super({ name: "ratBot", token, logger, intents });
+  constructor(props: RatBotProps) {
+    super({
+      ...props,
+      name: "ratBot",
+      intents,
+    });
 
     // when a message is created
     this.client.on("messageCreate", (message) => {
@@ -22,8 +41,8 @@ export class RatBot extends BotBase {
           // post the rat gif
           message.channel.send("https://i.imgur.com/KqvqLg3.gif");
         } catch (err) {
-          logger.error("failed to post message");
-          logger.error((err as Error).message);
+          this.logger.error("failed to post message");
+          this.logger.error((err as Error).message);
         }
       }
     });
@@ -31,7 +50,11 @@ export class RatBot extends BotBase {
     this.login();
   }
 
-  // check if the message contains "rat"
+  /**
+   * Check if the message contains "rat"
+   * @param message the message to check
+   * @returns true if the message contains "rat"
+   */
   static containsRat(message: string): boolean {
     return regex.exec(message) != null;
   }

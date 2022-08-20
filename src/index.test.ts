@@ -22,7 +22,7 @@ describe("In index.ts", () => {
       // create a logger mock
       const loggerMock = {} as unknown as ILogger;
 
-      const settings = Program.loadConfig(loggerMock);
+      const settings = Program.loadSettings(loggerMock);
 
       expect(settings?.botTokens?.ratBot).toBe(token);
     });
@@ -40,7 +40,7 @@ describe("In index.ts", () => {
       // spy on the error call
       const spy = jest.spyOn(loggerMock, "error");
 
-      const settings = Program.loadConfig(loggerMock);
+      const settings = Program.loadSettings(loggerMock);
 
       expect(settings).toBeUndefined();
       expect(spy).toBeCalledTimes(1);
