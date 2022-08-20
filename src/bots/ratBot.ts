@@ -19,12 +19,22 @@ export class ratBot {
     client.on("messageCreate", (message) => {
       // if it contains rat
       if (regex.exec(message.content)) {
-        // post the rat gif
-        message.channel.send("https://i.imgur.com/KqvqLg3.gif");
+        try {
+          // post the rat gif
+          message.channel.send("https://i.imgur.com/KqvqLg3.gif");
+        } catch (err) {
+          logger.error("failed to post message");
+          logger.error((err as Error).message);
+        }
       }
     });
 
-    client.login(token);
+    try {
+      client.login(token);
+    } catch (err) {
+      logger.error("failed to log in");
+      logger.error((err as Error).message);
+    }
   }
 
   static create(token: string, logger: ILogger) {
