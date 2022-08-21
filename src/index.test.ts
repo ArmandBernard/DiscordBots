@@ -3,7 +3,6 @@ import { Program } from "./index";
 import { MockLogger } from "./Logger/MockLogger";
 
 jest.mock("fs");
-jest.mock("./Logger");
 
 describe("In index.ts", () => {
   describe("loadConfig", () => {
