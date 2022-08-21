@@ -14,7 +14,7 @@ const lookForWeatherRegex = /\bweather\b/i;
 
 // Use https://regexr.com/ to try this out!
 const getCityRegex =
-  /\bweather in ((?:[\w]+? ?)+?)(?:(in fahrenheit)|[^\w ]|$)/im;
+  /\bweather in ((?:[\w,]+? ?)+?)(?:(in fahrenheit)|[^\w, ]|$)/im;
 
 interface WeatherBotProps {
   /**
@@ -53,14 +53,17 @@ export class WeatherBot extends BotBase {
 
       const request = WeatherBot.parseRequest(message.content, this.logger);
 
-      if (!request.city) {
+      if (!request.location) {
         message.channel.send(
           "Please format your request like this:\n'Weather in <cityname>( in fahrenheit)'"
         );
         return;
       }
 
-      const result = await WeatherBot.callApi(this.weatherKey, request.city);
+      const result = await WeatherBot.callApi(
+        this.weatherKey,
+        request.location
+      );
 
       message.channel.send(WeatherBot.ComposeReply(request, result));
     });
@@ -68,8 +71,11 @@ export class WeatherBot extends BotBase {
     this.login();
   }
 
-  static async callApi(weatherKey: string, city: string): Promise<ApiResponse> {
-    const url = `${apiUrl}/current.json?key=${weatherKey}&q=${city}`;
+  static async callApi(
+    weatherKey: string,
+    location: string
+  ): Promise<ApiResponse> {
+    const url = `${apiUrl}/current.json?key=${weatherKey}&q=${location}`;
 
     const response = await fetch(url);
 
@@ -101,7 +107,7 @@ export class WeatherBot extends BotBase {
     const useFahrenheit = (regexResult && regexResult[2]) !== undefined;
 
     return {
-      city: city ?? undefined,
+      location: city ?? undefined,
       useFahrenheit,
     };
   }
@@ -124,6 +130,6 @@ ${temp} (feels like ${feelsLike})
 }
 
 interface WeatherRequest {
-  city: string | undefined;
+  location: string | undefined;
   useFahrenheit: boolean;
 }

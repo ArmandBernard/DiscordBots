@@ -18,7 +18,7 @@ describe("WeatherBot", () => {
       validPhrases.forEach((phrase) => {
         const request = WeatherBot.parseRequest(phrase[0], new MockLogger());
 
-        expect(request.city).toBe(phrase[1]);
+        expect(request.location).toBe(phrase[1]);
       });
     });
 
@@ -29,7 +29,7 @@ describe("WeatherBot", () => {
           new MockLogger()
         );
 
-        expect(request.city).toBeUndefined();
+        expect(request.location).toBeUndefined();
       });
     });
 
@@ -41,7 +41,7 @@ describe("WeatherBot", () => {
         new MockLogger()
       );
 
-      expect(request.city).toBe(cityName);
+      expect(request.location).toBe(cityName);
       expect(request.useFahrenheit).toBe(true);
     });
   });
