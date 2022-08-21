@@ -1,32 +1,21 @@
 import { WeatherBot } from "./weatherBot";
 
-const validSingleWordCityNames = ["Paris", "london", "Delhi"];
-const validMultiWordCityNames = ["New York", "Las Vegas"];
-
 const invalidCityNames = ["", " ", "."];
 
 const validPhrases = [
-  ["weather in London", "London"],
-  ["weather in New York", "New York"],
+  ["Weather in London", "London"],
+  ["weather in new york", "new york"],
   ["weather in New York in fahrenheit", "New York"],
   ["I'd like the weather in New York, thanks.", "New York"],
 ];
 
 describe("WeatherBot", () => {
   describe("parseRequest", () => {
-    it("will pull all the a single word cities successfully", () => {
-      validSingleWordCityNames.forEach((cityName) => {
-        const request = WeatherBot.parseRequest(`weather in ${cityName}`);
+    it("will pull city for all valid phrases", () => {
+      validPhrases.forEach((phrase) => {
+        const request = WeatherBot.parseRequest(phrase[0]);
 
-        expect(request.city).toBe(cityName);
-      });
-    });
-
-    it("will pull all the a multi-word cities successfully", () => {
-      validMultiWordCityNames.forEach((cityName) => {
-        const request = WeatherBot.parseRequest(`weather in ${cityName}`);
-
-        expect(request.city).toBe(cityName);
+        expect(request.city).toBe(phrase[1]);
       });
     });
 
@@ -47,14 +36,6 @@ describe("WeatherBot", () => {
 
       expect(request.city).toBe(cityName);
       expect(request.useFahrenheit).toBe(true);
-    });
-
-    it("will have a regex match for all valid phrases", () => {
-      validPhrases.forEach((phrase) => {
-        const request = WeatherBot.parseRequest(phrase[0]);
-
-        expect(request.city).toBe(phrase[1]);
-      });
     });
   });
 });
