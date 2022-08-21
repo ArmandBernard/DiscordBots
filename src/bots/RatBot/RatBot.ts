@@ -35,6 +35,7 @@ export class RatBot extends BotBase {
     super({
       ...props,
       name: "ratBot",
+      id: "1006615047805616249",
       intents,
     });
 

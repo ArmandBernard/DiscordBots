@@ -35,6 +35,7 @@ export class WeatherBot extends BotBase {
     super({
       ...props,
       name: "weatherBot",
+      id: "1010629365555531846",
       intents,
     });
 
