@@ -1,8 +1,8 @@
 import { RatBot } from "./bots/RatBot/RatBot";
 import { copyTemplate } from "./copyTemplate";
 import { readFileSync } from "fs";
-import { Logger } from "./Logger";
-import { ILogger } from "./ILogger";
+import { Logger } from "./Logger/Logger";
+import { ILogger } from "./Logger/ILogger";
 import { WeatherBot } from "./bots/WeatherBot/WeatherBot";
 
 export class Program {

@@ -1,5 +1,5 @@
 import { GatewayIntentBits, IntentsBitField } from "discord.js";
-import { ILogger } from "../../ILogger";
+import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
 import fetch from "cross-fetch";
 import { ApiResponse, apiUrl } from "./WeatherApi";

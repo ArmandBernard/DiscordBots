@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
-import { Program } from ".";
-import { ILogger } from "./ILogger";
+import { Program } from "./index";
+import { ILogger } from "./Logger/ILogger";
 
 jest.mock("fs");
 jest.mock("./Logger");
@@ -20,7 +20,7 @@ describe("In index.ts", () => {
       mockedRead.mockReturnValue(mockSettingsJson);
 
       // create a logger mock
-      const loggerMock = {} as unknown as ILogger;
+      const loggerMock = {} as ILogger;
 
       const settings = Program.loadSettings(loggerMock);
 

@@ -1,4 +1,5 @@
 import { WeatherBot } from "./WeatherBot";
+import { ILogger } from "../../Logger/ILogger";
 
 const invalidCityNames = ["", " ", "."];
 
