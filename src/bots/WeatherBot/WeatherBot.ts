@@ -2,6 +2,7 @@ import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { ILogger } from "../../ILogger";
 import { BotBase } from "../BotBase";
 import fetch from "cross-fetch";
+import { ApiResponse, apiUrl } from "./WeatherApi";
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
@@ -14,8 +15,6 @@ const lookForWeatherRegex = /\bweather\b/i;
 // Use https://regexr.com/ to try this out!
 const getCityRegex =
   /\bweather in ((?:[\w]+? ?)+?)(?:(in fahrenheit)|[^\w ]|$)/im;
-
-const apiUrl = "https://api.weatherapi.com/v1";
 
 interface WeatherBotProps {
   /**
@@ -98,21 +97,4 @@ export class WeatherBot extends BotBase {
 interface Request {
   city: string | undefined;
   useFahrenheit: boolean;
-}
-
-interface ApiResponse {
-  location: ApiLocation;
-  current: CurrentWeather;
-}
-
-interface ApiLocation {
-  name: string;
-  region: string;
-  country: string;
-  localTime: string;
-}
-
-interface CurrentWeather {
-  temp_c: number;
-  temp_f: number;
 }
