@@ -47,18 +47,25 @@ export class WeatherBot extends BotBase {
         return;
       }
 
-      const result = await WeatherBot.callApi(this.weatherKey);
-
       const request = WeatherBot.parseRequest(message.content, this.logger);
 
-      message.channel.send(WeatherBot.ComposeReply(request, result));
+      if (!request.city) {
+        message.channel.send(
+          "Please format your request like this:\n'Weather in <cityname>( in fahrenheit)'"
+        );
+        return;
+      }
+
+      const result = await WeatherBot.callApi(this.weatherKey, request.city);
+
+      WeatherBot.ComposeReply(request, result);
     });
 
     this.login();
   }
 
-  static async callApi(weatherKey: string): Promise<ApiResponse> {
-    const url = `${apiUrl}/current.json?key=${weatherKey}&q=London`;
+  static async callApi(weatherKey: string, city: string): Promise<ApiResponse> {
+    const url = `${apiUrl}/current.json?key=${weatherKey}&q=${city}`;
 
     const response = await fetch(url);
 
@@ -96,12 +103,6 @@ export class WeatherBot extends BotBase {
   }
 
   static ComposeReply(request: WeatherRequest, data: ApiResponse): string {
-    if (!request.city) {
-      return `Please format your request like this:
-"Weather in <cityname>( in fahrenheit)"
-`;
-    }
-
     const { location, current: weather } = data;
 
     const temp: string = request.useFahrenheit
