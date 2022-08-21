@@ -43,7 +43,11 @@ export class WeatherBot extends BotBase {
 
     // when a message is created
     this.client.on("messageCreate", async (message) => {
-      if (!WeatherBot.containsWeather(message.content)) {
+      // don't do anything if this bot is the sender or message does not contain keyword
+      if (
+        message.author.id === this.id ||
+        !WeatherBot.containsWeather(message.content)
+      ) {
         return;
       }
 
