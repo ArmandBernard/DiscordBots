@@ -1,4 +1,4 @@
-import { WeatherBot } from "./weatherBot";
+import { WeatherBot } from "./WeatherBot";
 
 const invalidCityNames = ["", " ", "."];
 

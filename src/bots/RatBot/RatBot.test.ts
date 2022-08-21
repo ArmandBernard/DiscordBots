@@ -1,4 +1,4 @@
-import { RatBot } from "./ratBot";
+import { RatBot } from "./RatBot";
 
 const validExamples = ["rat", " rat ", "You are a rat.", "RAT"];
 const invalidExamples = ["ratatouille"];

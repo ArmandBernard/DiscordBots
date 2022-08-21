@@ -1,9 +1,9 @@
-import { RatBot } from "./bots/ratBot";
+import { RatBot } from "./bots/RatBot/RatBot";
 import { copyTemplate } from "./copyTemplate";
 import { readFileSync } from "fs";
 import { Logger } from "./Logger";
 import { ILogger } from "./ILogger";
-import { WeatherBot } from "./bots/weatherBot";
+import { WeatherBot } from "./bots/WeatherBot/WeatherBot";
 
 export class Program {
   /**

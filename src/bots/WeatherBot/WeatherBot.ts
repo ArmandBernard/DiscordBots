@@ -1,6 +1,6 @@
 import { GatewayIntentBits, IntentsBitField } from "discord.js";
-import { ILogger } from "../ILogger";
-import { BotBase } from "./botBase";
+import { ILogger } from "../../ILogger";
+import { BotBase } from "../BotBase";
 import fetch from "cross-fetch";
 
 const intents: GatewayIntentBits[] = [

@@ -4,8 +4,8 @@ import {
   IntentsBitField,
   Message,
 } from "discord.js";
-import { ILogger } from "../ILogger";
-import { BotBase } from "./botBase";
+import { ILogger } from "../../ILogger";
+import { BotBase } from "../BotBase";
 
 const regex = /\brat\b/i;
 
