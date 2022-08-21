@@ -1,8 +1,9 @@
-import { RatBot } from "./bots/ratBot";
+import { RatBot } from "./bots/RatBot/RatBot";
 import { copyTemplate } from "./copyTemplate";
 import { readFileSync } from "fs";
-import { Logger } from "./Logger";
-import { ILogger } from "./ILogger";
+import { Logger } from "./Logger/Logger";
+import { ILogger } from "./Logger/ILogger";
+import { WeatherBot } from "./bots/WeatherBot/WeatherBot";
 
 export class Program {
   /**
@@ -20,10 +21,21 @@ export class Program {
       return;
     }
 
-    const ratBotToken = settings.botTokens?.ratBot;
+    const ratBotToken = settings.ratBot?.token;
 
     if (ratBotToken) {
       new RatBot({ token: ratBotToken, logger });
+    }
+
+    const weatherBotToken = settings.weatherBot?.token;
+    const weatherAPIToken = settings.weatherBot?.weatherApiToken;
+
+    if (weatherBotToken && weatherAPIToken) {
+      new WeatherBot({
+        token: weatherBotToken,
+        weatherKey: weatherAPIToken,
+        logger,
+      });
     }
   }
 
@@ -50,7 +62,15 @@ Program.main();
  * The expected shape of the applications settings file
  */
 interface IAppSettings {
-  botTokens: {
-    ratBot: string;
-  };
+  ratBot:
+    | {
+        token: string | undefined;
+      }
+    | undefined;
+  weatherBot:
+    | {
+        token: string | undefined;
+        weatherApiToken: string | undefined;
+      }
+    | undefined;
 }

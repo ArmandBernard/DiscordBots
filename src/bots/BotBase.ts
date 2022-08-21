@@ -1,8 +1,12 @@
-import { ILogger } from "../ILogger";
+import { ILogger } from "../Logger/ILogger";
 
 import Discord, { GatewayIntentBits, IntentsBitField } from "discord.js";
 
 export type BotBaseProps = {
+  /**
+   * The id of the application, useful for preventing the bot from triggering itself.
+   */
+  id: string;
   /**
    * The name of the bot
    */
@@ -31,6 +35,7 @@ export abstract class BotBase {
   client: Discord.Client;
   logger: ILogger;
   name: string;
+  id: string;
   private token: string;
 
   private _loggedIn = false;
@@ -52,6 +57,7 @@ export abstract class BotBase {
     this.logger = props.logger;
     this.token = props.token;
     this.name = props.name;
+    this.id = props.id;
 
     let client: Discord.Client;
     try {

@@ -4,8 +4,8 @@ import {
   IntentsBitField,
   Message,
 } from "discord.js";
-import { ILogger } from "../ILogger";
-import { BotBase } from "./botBase";
+import { ILogger } from "../../Logger/ILogger";
+import { BotBase } from "../BotBase";
 
 const regex = /\brat\b/i;
 
@@ -35,6 +35,7 @@ export class RatBot extends BotBase {
     super({
       ...props,
       name: "ratBot",
+      id: "1006615047805616249",
       intents,
     });
 
