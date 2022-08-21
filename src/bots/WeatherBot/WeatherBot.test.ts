@@ -6,8 +6,10 @@ const invalidCityNames = ["", " ", "."];
 const validPhrases = [
   ["Weather in London", "London"],
   ["weather in new york", "new york"],
+  ["Weather in Memphis, Egypt", "Memphis, Egypt"],
+  ["Weather in Memphis, Tennessee in fahrenheit", "Memphis, Tennessee"],
   ["weather in New York in fahrenheit", "New York"],
-  ["I'd like the weather in New York, thanks.", "New York"],
+  ["I'd like the weather in New York. Thank you.", "New York"],
 ];
 
 describe("WeatherBot", () => {
