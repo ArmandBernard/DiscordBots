@@ -3,6 +3,7 @@ import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
 import fetch from "cross-fetch";
 import { ApiResponse, apiUrl } from "./WeatherApi";
+import { encodeUrl } from "../../urlEncoding";
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
@@ -68,9 +69,13 @@ export class WeatherBot extends BotBase {
     this.login();
   }
 
-  static async callApi(weatherKey: string, city: string): Promise<ApiResponse> {
-    const url = `${apiUrl}/current.json?key=${weatherKey}&q=${city}`;
+  static async callApi(apiToken: string, city: string): Promise<ApiResponse> {
+    const params = {
+      key: apiToken,
+      q: city,
+    };
 
+    const url = encodeUrl(`${apiUrl}/current.json`, params);
     const response = await fetch(url);
 
     return response.json() as Promise<ApiResponse>;
