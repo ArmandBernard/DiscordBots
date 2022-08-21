@@ -86,7 +86,7 @@ export class WeatherBot extends BotBase {
     const city = regexResult && regexResult[1].trimEnd();
 
     if (!city) {
-      logger.log("failed to parse the following weather message:\n");
+      logger.warn("failed to parse the following weather message:\n");
     }
 
     const useFahrenheit = (regexResult && regexResult[2]) !== undefined;
