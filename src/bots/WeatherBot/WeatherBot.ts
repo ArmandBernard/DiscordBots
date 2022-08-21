@@ -81,11 +81,15 @@ export class WeatherBot extends BotBase {
    * @param message the message to check
    * @returns true if the message contains "weather"
    */
-  static parseRequest(message: string): Request {
+  static parseRequest(message: string, logger: ILogger): WeatherRequest {
     const regexResult = getCityRegex.exec(message);
     const city = regexResult && regexResult[1].trimEnd();
 
-    const useFahrenheit = message.includes("fahrenheit");
+    if (!city) {
+      logger.log("failed to parse the following weather message:\n");
+    }
+
+    const useFahrenheit = (regexResult && regexResult[2]) !== undefined;
 
     return {
       city: city ?? undefined,
