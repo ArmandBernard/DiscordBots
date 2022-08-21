@@ -72,11 +72,15 @@ export class WeatherBot extends BotBase {
   }
 
   static async callApi(
-    weatherKey: string,
+    apiToken: string,
     location: string
   ): Promise<ApiResponse> {
-    const url = `${apiUrl}/current.json?key=${weatherKey}&q=${location}`;
+    const params = {
+      key: apiToken,
+      q: location,
+    };
 
+    const url = encodeUrl(`${apiUrl}/current.json`, params);
     const response = await fetch(url);
 
     return response.json() as Promise<ApiResponse>;
@@ -133,3 +137,24 @@ interface WeatherRequest {
   location: string | undefined;
   useFahrenheit: boolean;
 }
+
+/**
+ * Encode the object provided as url parameters
+ * @param parameters
+ * @returns an encoded parameters section of a url
+ */
+const encodeUrlParams = (parameters: {
+  [s: string]: string | number | boolean;
+}) =>
+  Object.entries(parameters)
+    .map((kv) => kv.map(encodeURIComponent).join("="))
+    .join("&");
+
+const encodeUrl = (
+  url: string,
+  parameters: {
+    [s: string]: string | number | boolean;
+  }
+) => {
+  return `${url}?${encodeUrlParams(parameters)}`;
+};
