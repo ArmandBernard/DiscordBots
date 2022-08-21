@@ -10,11 +10,13 @@ const validPhrases = [
   ["I'd like the weather in New York, thanks.", "New York"],
 ];
 
+const mockLogger = { warn: () => undefined } as unknown as ILogger;
+
 describe("WeatherBot", () => {
   describe("parseRequest", () => {
     it("will pull city for all valid phrases", () => {
       validPhrases.forEach((phrase) => {
-        const request = WeatherBot.parseRequest(phrase[0]);
+        const request = WeatherBot.parseRequest(phrase[0], mockLogger);
 
         expect(request.city).toBe(phrase[1]);
       });
@@ -22,7 +24,10 @@ describe("WeatherBot", () => {
 
     it("will ignore invalid city names", () => {
       invalidCityNames.forEach((cityName) => {
-        const request = WeatherBot.parseRequest(`weather in ${cityName}`);
+        const request = WeatherBot.parseRequest(
+          `weather in ${cityName}`,
+          mockLogger
+        );
 
         expect(request.city).toBeUndefined();
       });
@@ -32,7 +37,8 @@ describe("WeatherBot", () => {
       const cityName = "Paris";
 
       const request = WeatherBot.parseRequest(
-        `weather in ${cityName} in fahrenheit`
+        `weather in ${cityName} in fahrenheit`,
+        mockLogger
       );
 
       expect(request.city).toBe(cityName);
