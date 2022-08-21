@@ -5,6 +5,11 @@ export interface ILogger {
    */
   log(message: string): void;
   /**
+   * Log an warning level message
+   * @param message
+   */
+  warn(message: string): void;
+  /**
    * log an error-level message
    * @param message
    */
