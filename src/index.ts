@@ -21,14 +21,14 @@ export class Program {
       return;
     }
 
-    const ratBotToken = settings.botTokens.ratBot;
+    const ratBotToken = settings.ratBot?.token;
 
     if (ratBotToken) {
       new RatBot({ token: ratBotToken, logger });
     }
 
-    const weatherBotToken = settings.botTokens.weatherBot;
-    const weatherAPIToken = settings.botTokens.weatherAPIToken;
+    const weatherBotToken = settings.weatherBot?.token;
+    const weatherAPIToken = settings.weatherBot?.weatherApiToken;
 
     if (weatherBotToken && weatherAPIToken) {
       new WeatherBot({
@@ -62,9 +62,15 @@ Program.main();
  * The expected shape of the applications settings file
  */
 interface IAppSettings {
-  botTokens: {
-    ratBot: string | undefined;
-    weatherBot: string | undefined;
-    weatherAPIToken: string | undefined;
-  };
+  ratBot:
+    | {
+        token: string | undefined;
+      }
+    | undefined;
+  weatherBot:
+    | {
+        token: string | undefined;
+        weatherApiToken: string | undefined;
+      }
+    | undefined;
 }

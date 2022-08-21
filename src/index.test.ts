@@ -9,8 +9,8 @@ describe("In index.ts", () => {
     it("should return parse and return valid settings", () => {
       const token = "ratToken";
       const mockSettingsJson = `{
-            "botTokens": {
-                "ratBot": "${token}"
+            "ratBot": {
+                "token": "${token}"
             }
         }`;
 
@@ -20,7 +20,7 @@ describe("In index.ts", () => {
 
       const settings = Program.loadSettings(new MockLogger());
 
-      expect(settings?.botTokens?.ratBot).toBe(token);
+      expect(settings?.ratBot?.token).toBe(token);
     });
 
     it("should log error when run on invalid json", () => {
