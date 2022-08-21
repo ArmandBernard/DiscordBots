@@ -47,11 +47,7 @@ export class WeatherBot extends BotBase {
         return;
       }
 
-      const url = `${apiUrl}/current.json?key=${this.weatherKey}&q=London`;
-
-      const response = await fetch(url);
-
-      const result = (await response.json()) as APIResponse;
+      const result = await WeatherBot.callApi(this.weatherKey);
 
       const name = result.location.name;
       const temp = result.current.temp_c;
@@ -62,6 +58,14 @@ export class WeatherBot extends BotBase {
     });
 
     this.login();
+  }
+
+  static async callApi(weatherKey: string): Promise<ApiResponse> {
+    const url = `${apiUrl}/current.json?key=${weatherKey}&q=London`;
+
+    const response = await fetch(url);
+
+    return response.json() as Promise<ApiResponse>;
   }
 
   /**
@@ -89,7 +93,7 @@ export class WeatherBot extends BotBase {
       useFahrenheit,
     };
   }
-  }
+}
 
 interface Request {
   city: string | undefined;
@@ -110,4 +114,5 @@ interface ApiLocation {
 
 interface CurrentWeather {
   temp_c: number;
+  temp_f: number;
 }
