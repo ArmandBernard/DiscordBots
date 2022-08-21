@@ -48,12 +48,9 @@ export class WeatherBot extends BotBase {
 
       const result = await WeatherBot.callApi(this.weatherKey);
 
-      const name = result.location.name;
-      const temp = result.current.temp_c;
+      const request = WeatherBot.parseRequest(message.content, this.logger);
 
-      const messageToSend = `In ${name}, the temperature is ${temp}°C`;
-
-      message.channel.send(messageToSend);
+      message.channel.send(WeatherBot.ComposeReply(request, result));
     });
 
     this.login();
@@ -96,9 +93,31 @@ export class WeatherBot extends BotBase {
       useFahrenheit,
     };
   }
+
+  static ComposeReply(request: WeatherRequest, data: ApiResponse): string {
+    if (!request.city) {
+      return `Please format your request like this:
+"Weather in <cityname>( in fahrenheit)"
+`;
+    }
+
+    const { location, current: weather } = data;
+
+    const temp: string = request.useFahrenheit
+      ? weather.temp_f + "°F"
+      : weather.temp_c + "°C";
+    const feelsLike: string = request.useFahrenheit
+      ? weather.feelslike_f + "°F"
+      : weather.feelslike_c + "°C";
+
+    return `The weather in ${location.name}, ${location.country} is:
+${weather["condition:text"]}
+${temp} (feels like ${feelsLike})
+    `;
+  }
 }
 
-interface Request {
+interface WeatherRequest {
   city: string | undefined;
   useFahrenheit: boolean;
 }

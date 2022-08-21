@@ -15,4 +15,7 @@ interface ApiLocation {
 interface CurrentWeather {
   temp_c: number;
   temp_f: number;
+  feelslike_c: number;
+  feelslike_f: number;
+  "condition:text": string;
 }
