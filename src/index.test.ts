@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { Program } from "./index";
-import { ILogger } from "./Logger/ILogger";
+import { MockLogger } from "./Logger/MockLogger";
 
 jest.mock("fs");
 jest.mock("./Logger");
@@ -19,10 +19,7 @@ describe("In index.ts", () => {
       const mockedRead = jest.mocked(readFileSync, true);
       mockedRead.mockReturnValue(mockSettingsJson);
 
-      // create a logger mock
-      const loggerMock = {} as ILogger;
-
-      const settings = Program.loadSettings(loggerMock);
+      const settings = Program.loadSettings(new MockLogger());
 
       expect(settings?.botTokens?.ratBot).toBe(token);
     });
@@ -33,9 +30,7 @@ describe("In index.ts", () => {
       mockedRead.mockReturnValue("what?");
 
       // create a logger mock
-      const loggerMock = {
-        error: () => undefined,
-      } as unknown as ILogger;
+      const loggerMock = new MockLogger();
 
       // spy on the error call
       const spy = jest.spyOn(loggerMock, "error");
