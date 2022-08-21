@@ -17,5 +17,9 @@ interface CurrentWeather {
   temp_f: number;
   feelslike_c: number;
   feelslike_f: number;
-  "condition:text": string;
+  condition: Condition;
+}
+
+interface Condition {
+  text: string;
 }

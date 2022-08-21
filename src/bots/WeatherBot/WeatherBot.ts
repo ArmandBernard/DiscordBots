@@ -62,7 +62,7 @@ export class WeatherBot extends BotBase {
 
       const result = await WeatherBot.callApi(this.weatherKey, request.city);
 
-      WeatherBot.ComposeReply(request, result);
+      message.channel.send(WeatherBot.ComposeReply(request, result));
     });
 
     this.login();
@@ -117,7 +117,7 @@ export class WeatherBot extends BotBase {
       : weather.feelslike_c + "°C";
 
     return `The weather in ${location.name}, ${location.country} is:
-${weather["condition:text"]}
+${weather.condition.text}
 ${temp} (feels like ${feelsLike})
     `;
   }
