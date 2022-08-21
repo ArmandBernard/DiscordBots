@@ -4,9 +4,11 @@ This is a repo for all my Discord bots.
 
 It's written in Node.js and uses TypeScript.
 
-I plan on adding test later too.
+The following bots are already working:
 
-Current planned is:
+- RatBot: A bot that looks out of the word rat, and comments a rat gif if it sees it
+- WeatherBot: Tells you the current weather for a given city
 
-- ratBot: a bot that looks out of the word rat, and comments a rat gif if it sees it
-- naughtyWordFinder: a bot that tells you how many times you've used a (bad) word.
+I plan to make the following bots in the future:
+
+- WordCounter: A bot that tells you how many times you've used a (bad) word.
