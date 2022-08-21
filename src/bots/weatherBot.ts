@@ -9,7 +9,11 @@ const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.MessageContent,
 ];
 
-const regex = /\bweather\b/i;
+const lookForWeatherRegex = /\bweather\b/i;
+
+// Use https://regexr.com/ to try this out!
+const getCityRegex =
+  /\bweather in ((?:[\w]+? ?)+?)(?:(in fahrenheit)|[^\w ]|$)/im;
 
 const apiUrl = "https://api.weatherapi.com/v1";
 
@@ -66,16 +70,38 @@ export class WeatherBot extends BotBase {
    * @returns true if the message contains "weather"
    */
   static containsWeather(message: string): boolean {
-    return regex.exec(message) != null;
+    return lookForWeatherRegex.exec(message) != null;
   }
+
+  /**
+   * Check if the message contains "weather"
+   * @param message the message to check
+   * @returns true if the message contains "weather"
+   */
+  static parseRequest(message: string): Request {
+    const regexResult = getCityRegex.exec(message);
+    const city = regexResult && regexResult[1].trimEnd();
+
+    const useFahrenheit = message.includes("fahrenheit");
+
+    return {
+      city: city ?? undefined,
+      useFahrenheit,
+    };
+  }
+  }
+
+interface Request {
+  city: string | undefined;
+  useFahrenheit: boolean;
 }
 
-interface APIResponse {
-  location: APILocation;
+interface ApiResponse {
+  location: ApiLocation;
   current: CurrentWeather;
 }
 
-interface APILocation {
+interface ApiLocation {
   name: string;
   region: string;
   country: string;
