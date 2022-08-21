@@ -3,6 +3,7 @@ import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
 import fetch from "cross-fetch";
 import { ApiResponse, apiUrl } from "./WeatherApi";
+import { encodeUrl } from "../../urlEncoding";
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
@@ -131,24 +132,3 @@ interface WeatherRequest {
   city: string | undefined;
   useFahrenheit: boolean;
 }
-
-/**
- * Encode the object provided as url parameters
- * @param parameters
- * @returns an encoded parameters section of a url
- */
-const encodeUrlParams = (parameters: {
-  [s: string]: string | number | boolean;
-}) =>
-  Object.entries(parameters)
-    .map((kv) => kv.map(encodeURIComponent).join("="))
-    .join("&");
-
-const encodeUrl = (
-  url: string,
-  parameters: {
-    [s: string]: string | number | boolean;
-  }
-) => {
-  return `${url}?${encodeUrlParams(parameters)}`;
-};
