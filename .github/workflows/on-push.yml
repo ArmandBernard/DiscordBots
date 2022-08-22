@@ -1,0 +1,30 @@
+name: On-push checks
+
+on:
+  push:
+
+jobs:
+  lint:
+    name: Run linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+      - name: Reinstall packages
+        run: npm i
+      - name: Run linter
+        run: npm run lint
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+      - name: Reinstall packages
+        run: npm i
+      - name: Run tests
+        run: npm run test
