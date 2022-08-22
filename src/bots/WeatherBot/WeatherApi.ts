@@ -1,6 +1,28 @@
+// API Documentation can be found here:
+// https://www.weatherapi.com/docs/
+
 export const apiUrl = "https://api.weatherapi.com/v1";
 
-export interface ApiResponse {
+export type ApiResponse = ApiSuccessResponse | ApiErrorResponse;
+
+interface ApiErrorResponse {
+  error: ApiError;
+}
+
+// type guard for error response
+// (see https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
+export const isApiErrorResponse = (
+  apiResponse: ApiResponse
+): apiResponse is ApiErrorResponse => {
+  return (apiResponse as ApiErrorResponse).error !== undefined;
+};
+
+interface ApiError {
+  code: number;
+  message: string;
+}
+
+interface ApiSuccessResponse {
   location: ApiLocation;
   current: CurrentWeather;
 }
