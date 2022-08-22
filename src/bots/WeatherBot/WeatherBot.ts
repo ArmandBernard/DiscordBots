@@ -113,7 +113,12 @@ export class WeatherBot extends BotBase {
 
   static ComposeReply(request: WeatherRequest, data: ApiResponse): string {
     if (isApiErrorResponse(data)) {
-      return `An error occurred: ${data.error.code} - ${data.error.message}`;
+      switch (data.error.code) {
+        case 1006:
+          return "I don't know where that is.";
+        default:
+          return `An error occurred: ${data.error.code} - ${data.error.message}`;
+      }
     }
 
     const { location, current: weather } = data;
