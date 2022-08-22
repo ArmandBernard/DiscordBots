@@ -1,8 +1,12 @@
 # Armand's Discord Bots
 
+![Project Build](https://github.com/ArmandBernard/DiscordBots/actions/workflows/node.yml/badge.svg)
+
 This is a repo for all my Discord bots.
 
 It's written in Node.js and uses TypeScript.
+
+## What I'm making
 
 The following bots are already working:
 
