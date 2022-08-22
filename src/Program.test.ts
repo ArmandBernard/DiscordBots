@@ -1,8 +1,12 @@
-import { readFileSync } from "fs";
+import fs from "fs";
 import { Program } from "./Program";
 import { MockLogger } from "./Logger/MockLogger";
 
-jest.mock("fs");
+jest.mock("fs", () => ({
+  promises: {
+    readFile: () => undefined,
+  },
+}));
 
 describe("loadConfig", () => {
   it("should return parse and return valid settings", async () => {
@@ -13,9 +17,9 @@ describe("loadConfig", () => {
           }
       }`;
 
-    // create mock of readFileSync;
-    const mockedRead = jest.mocked(readFileSync, true);
-    mockedRead.mockReturnValue(mockSettingsJson);
+    // mock async readFile;
+    const mockedRead = jest.spyOn(fs.promises, "readFile");
+    mockedRead.mockReturnValue(Promise.resolve(mockSettingsJson));
 
     const settings = await Program.loadSettings(new MockLogger());
 
@@ -23,9 +27,9 @@ describe("loadConfig", () => {
   });
 
   it("should log error when run on invalid json", async () => {
-    // create mock of readFileSync;
-    const mockedRead = jest.mocked(readFileSync, true);
-    mockedRead.mockReturnValue("what?");
+    // mock async readFile;
+    const mockedRead = jest.spyOn(fs.promises, "readFile");
+    mockedRead.mockReturnValue(Promise.resolve("what?"));
 
     // create a logger mock
     const loggerMock = new MockLogger();
