@@ -111,6 +111,12 @@ export class WeatherBot extends BotBase {
     };
   }
 
+  /**
+   * Compose a reply to send to the Discord
+   * @param request the original request made by the user, parsed
+   * @param data the ApiResponse
+   * @returns the message to send
+   */
   static ComposeReply(request: WeatherRequest, data: ApiResponse): string {
     if (isApiErrorResponse(data)) {
       switch (data.error.code) {
