@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ts-node-esm src/index.ts",
     "test": "jest",
-    "lint": "eslint --ext .js,.ts . && tsc --noemit"
+    "lint": "eslint --ext .js,.ts . && tsc --noEmit"
   },
   "author": "ArmandBernard",
   "license": "MIT",
