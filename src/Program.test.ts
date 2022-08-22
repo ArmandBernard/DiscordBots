@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { Program } from "./index";
+import { Program } from "./Program";
 import { MockLogger } from "./Logger/MockLogger";
 
 jest.mock("fs");

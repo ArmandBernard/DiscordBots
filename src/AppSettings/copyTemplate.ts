@@ -1,5 +1,5 @@
 import fs from "fs";
-import { ILogger } from "./Logger/ILogger";
+import { ILogger } from "../Logger/ILogger";
 
 /**
  * Copy the template settings file to the root directory
