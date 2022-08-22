@@ -1,6 +1,6 @@
 import { RatBot } from "./bots/RatBot/RatBot";
-import { copyTemplate } from "./AppSettings/copyTemplate";
-import { readFileSync } from "fs";
+import { createAppSettings } from "./AppSettings/appSettingsTemplate";
+import { promises as fs } from "fs";
 import { Logger } from "./Logger/Logger";
 import { ILogger } from "./Logger/ILogger";
 import { WeatherBot } from "./bots/WeatherBot/WeatherBot";
@@ -11,12 +11,18 @@ export class Program {
    * Program entry point
    * @returns
    */
-  static main() {
+  static async main() {
     const logger = new Logger();
 
-    copyTemplate(logger);
+    const created = await createAppSettings(logger);
 
-    const settings = Program.loadSettings(logger);
+    if (created) {
+      logger.log("edit the appSettings.json, then restart the application.");
+      logger.log("exiting");
+      return;
+    }
+
+    const settings = await Program.loadSettings(logger);
     if (!settings) {
       logger.log("exiting");
       return;
@@ -26,6 +32,8 @@ export class Program {
 
     if (ratBotToken) {
       new RatBot({ token: ratBotToken, logger });
+    } else {
+      logger.warn("no RatBot token found");
     }
 
     const weatherBotToken = settings.weatherBot?.token;
@@ -37,16 +45,27 @@ export class Program {
         weatherKey: weatherAPIToken,
         logger,
       });
+    } else {
+      logger.warn("no WeatherBot token found");
     }
   }
 
   /**
-   * Load the settings file for the application
+   * Load the settings for the application from file
    * @param logger
-   * @returns the settings file
+   * @returns the settings
    */
-  static loadSettings(logger: ILogger): IAppSettings | undefined {
-    const jsonTxt = readFileSync("appSettings.json", "utf8");
+  static async loadSettings(
+    logger: ILogger
+  ): Promise<IAppSettings | undefined> {
+    let jsonTxt: string;
+    try {
+      jsonTxt = await fs.readFile("appSettings.json", "utf8");
+    } catch (e) {
+      logger.error("failed to read appSettings.json");
+      logger.error((e as Error).message);
+      return undefined;
+    }
 
     try {
       return JSON.parse(jsonTxt);
