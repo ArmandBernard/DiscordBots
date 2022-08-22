@@ -1,6 +1,6 @@
 import { RatBot } from "./bots/RatBot/RatBot";
 import { createAppSettings } from "./AppSettings/appSettingsTemplate";
-import { readFileSync } from "fs";
+import { promises as fs } from "fs";
 import { Logger } from "./Logger/Logger";
 import { ILogger } from "./Logger/ILogger";
 import { WeatherBot } from "./bots/WeatherBot/WeatherBot";
@@ -22,7 +22,7 @@ export class Program {
       return;
     }
 
-    const settings = Program.loadSettings(logger);
+    const settings = await Program.loadSettings(logger);
     if (!settings) {
       logger.log("exiting");
       return;
@@ -51,8 +51,17 @@ export class Program {
    * @param logger
    * @returns the settings file
    */
-  static loadSettings(logger: ILogger): IAppSettings | undefined {
-    const jsonTxt = readFileSync("appSettings.json", "utf8");
+  static async loadSettings(
+    logger: ILogger
+  ): Promise<IAppSettings | undefined> {
+    let jsonTxt: string;
+    try {
+      jsonTxt = await fs.readFile("appSettings.json", "utf8");
+    } catch (e) {
+      logger.error("failed to read appSettings.json");
+      logger.error((e as Error).message);
+      return undefined;
+    }
 
     try {
       return JSON.parse(jsonTxt);
