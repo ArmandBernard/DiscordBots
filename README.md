@@ -1,6 +1,6 @@
 # Armand's Discord Bots
 
-![Project Build](https://github.com/ArmandBernard/DiscordBots/actions/workflows/node.yml/badge.svg)
+![Project Build](https://github.com/ArmandBernard/DiscordBots/actions/workflows/on-push.yml/badge.svg)
 
 This is a repo for all my Discord bots.
 
