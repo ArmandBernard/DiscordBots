@@ -1,5 +1,5 @@
 import { RatBot } from "./bots/RatBot/RatBot";
-import { copyTemplate } from "./AppSettings/appSettingsTemplate";
+import { createAppSettings } from "./AppSettings/appSettingsTemplate";
 import { readFileSync } from "fs";
 import { Logger } from "./Logger/Logger";
 import { ILogger } from "./Logger/ILogger";
@@ -14,7 +14,12 @@ export class Program {
   static async main() {
     const logger = new Logger();
 
-    await copyTemplate(logger);
+    const created = await createAppSettings(logger);
+
+    if (created) {
+      logger.log("Edit the appSettings.json, then restart the application");
+      return;
+    }
 
     const settings = Program.loadSettings(logger);
     if (!settings) {

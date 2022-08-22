@@ -2,6 +2,9 @@ import { promises as fs } from "fs";
 import { ILogger } from "../Logger/ILogger";
 import { IAppSettings } from "./IAppSettings";
 
+/**
+ * The template for appSettings.json
+ */
 const appSettingsTemplate: IAppSettings = {
   ratBot: {
     token: "",
@@ -13,10 +16,11 @@ const appSettingsTemplate: IAppSettings = {
 };
 
 /**
- * Copy the template settings file to the root directory
- * @param logger The logger to use
+ * Create a template appSettings
+ * @param logger
+ * @returns true if a new file was create, false if not
  */
-export async function copyTemplate(logger: ILogger) {
+export async function createAppSettings(logger: ILogger): Promise<boolean> {
   try {
     await fs.writeFile(
       "appSettings.json",
@@ -24,7 +28,8 @@ export async function copyTemplate(logger: ILogger) {
       { flag: "wx" }
     );
   } catch {
-    return;
+    return false;
   }
   logger.log("appSettings.json created");
+  return true;
 }
