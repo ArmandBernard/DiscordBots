@@ -4,8 +4,8 @@ on:
   push:
 
 jobs:
-  checkout:
-    name: Checkout and setup
+  lint:
+    name: Run linter
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -14,32 +14,17 @@ jobs:
         uses: actions/setup-node@v3
       - name: Reinstall packages
         run: npm i
-      - name: Save artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: checked-out
-          path: ./
-  lint:
-    name: Run Linter
-    needs: ["checkout"]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Retrieve artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: checked-out
-          path: ./
-      - name: run linter
+      - name: Run linter
         run: npm run lint
   test:
     name: Run tests
-    needs: ["checkout"]
     runs-on: ubuntu-latest
     steps:
-      - name: Retrieve artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: checked-out
-          path: ./
-      - name: test
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+      - name: Reinstall packages
+        run: npm i
+      - name: Run tests
         run: npm run test
