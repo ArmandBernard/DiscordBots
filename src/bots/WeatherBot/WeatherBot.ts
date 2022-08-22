@@ -2,7 +2,7 @@ import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
 import fetch from "cross-fetch";
-import { ApiResponse, apiUrl } from "./WeatherApi";
+import { ApiResponse, apiUrl, isApiErrorResponse } from "./WeatherApi";
 import { encodeUrl } from "../../urlEncoding";
 
 const intents: GatewayIntentBits[] = [
@@ -112,6 +112,10 @@ export class WeatherBot extends BotBase {
   }
 
   static ComposeReply(request: WeatherRequest, data: ApiResponse): string {
+    if (isApiErrorResponse(data)) {
+      return `An error occurred: ${data.error.code} - ${data.error.message}`;
+    }
+
     const { location, current: weather } = data;
 
     const temp: string = request.useFahrenheit
