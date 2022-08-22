@@ -4,41 +4,39 @@ import { MockLogger } from "./Logger/MockLogger";
 
 jest.mock("fs");
 
-describe("In index.ts", () => {
-  describe("loadConfig", () => {
-    it("should return parse and return valid settings", async () => {
-      const token = "ratToken";
-      const mockSettingsJson = `{
-            "ratBot": {
-                "token": "${token}"
-            }
-        }`;
+describe("loadConfig", () => {
+  it("should return parse and return valid settings", async () => {
+    const token = "ratToken";
+    const mockSettingsJson = `{
+          "ratBot": {
+              "token": "${token}"
+          }
+      }`;
 
-      // create mock of readFileSync;
-      const mockedRead = jest.mocked(readFileSync, true);
-      mockedRead.mockReturnValue(mockSettingsJson);
+    // create mock of readFileSync;
+    const mockedRead = jest.mocked(readFileSync, true);
+    mockedRead.mockReturnValue(mockSettingsJson);
 
-      const settings = await Program.loadSettings(new MockLogger());
+    const settings = await Program.loadSettings(new MockLogger());
 
-      expect(settings?.ratBot?.token).toBe(token);
-    });
+    expect(settings?.ratBot?.token).toBe(token);
+  });
 
-    it("should log error when run on invalid json", async () => {
-      // create mock of readFileSync;
-      const mockedRead = jest.mocked(readFileSync, true);
-      mockedRead.mockReturnValue("what?");
+  it("should log error when run on invalid json", async () => {
+    // create mock of readFileSync;
+    const mockedRead = jest.mocked(readFileSync, true);
+    mockedRead.mockReturnValue("what?");
 
-      // create a logger mock
-      const loggerMock = new MockLogger();
+    // create a logger mock
+    const loggerMock = new MockLogger();
 
-      // spy on the error call
-      const spy = jest.spyOn(loggerMock, "error");
+    // spy on the error call
+    const spy = jest.spyOn(loggerMock, "error");
 
-      const settings = await Program.loadSettings(loggerMock);
+    const settings = await Program.loadSettings(loggerMock);
 
-      expect(settings).toBeUndefined();
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toBeCalledWith("failed to parse appSettings.json");
-    });
+    expect(settings).toBeUndefined();
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith("failed to parse appSettings.json");
   });
 });
