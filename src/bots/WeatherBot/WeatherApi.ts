@@ -1,3 +1,6 @@
+// API Documentation can be found here:
+// https://www.weatherapi.com/docs/
+
 export const apiUrl = "https://api.weatherapi.com/v1";
 
 export type ApiResponse = ApiSuccessResponse | ApiErrorResponse;
