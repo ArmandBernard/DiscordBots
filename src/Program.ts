@@ -47,9 +47,9 @@ export class Program {
   }
 
   /**
-   * Load the settings file for the application
+   * Load the settings for the application from file
    * @param logger
-   * @returns the settings file
+   * @returns the settings
    */
   static async loadSettings(
     logger: ILogger
