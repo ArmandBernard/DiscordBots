@@ -32,6 +32,8 @@ export class Program {
 
     if (ratBotToken) {
       new RatBot({ token: ratBotToken, logger });
+    } else {
+      logger.warn("no RatBot token found");
     }
 
     const weatherBotToken = settings.weatherBot?.token;
@@ -43,6 +45,8 @@ export class Program {
         weatherKey: weatherAPIToken,
         logger,
       });
+    } else {
+      logger.warn("no WeatherBot token found");
     }
   }
 
