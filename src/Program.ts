@@ -17,7 +17,8 @@ export class Program {
     const created = await createAppSettings(logger);
 
     if (created) {
-      logger.log("Edit the appSettings.json, then restart the application");
+      logger.log("edit the appSettings.json, then restart the application.");
+      logger.log("exiting");
       return;
     }
 
