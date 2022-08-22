@@ -1,5 +1,5 @@
 import { RatBot } from "./bots/RatBot/RatBot";
-import { copyTemplate } from "./AppSettings/copyTemplate";
+import { copyTemplate } from "./AppSettings/appSettingsTemplate";
 import { readFileSync } from "fs";
 import { Logger } from "./Logger/Logger";
 import { ILogger } from "./Logger/ILogger";
@@ -11,10 +11,10 @@ export class Program {
    * Program entry point
    * @returns
    */
-  static main() {
+  static async main() {
     const logger = new Logger();
 
-    copyTemplate(logger);
+    await copyTemplate(logger);
 
     const settings = Program.loadSettings(logger);
     if (!settings) {
