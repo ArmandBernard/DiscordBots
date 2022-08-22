@@ -20,7 +20,7 @@ export async function copyTemplate(logger: ILogger) {
   try {
     await fs.writeFile(
       "appSettings.json",
-      JSON.stringify(appSettingsTemplate),
+      JSON.stringify(appSettingsTemplate, null, 2),
       { flag: "wx" }
     );
   } catch {
