@@ -76,9 +76,9 @@ export class WordCounter extends BotBase {
     const filtered = messages.filter((m) => m.content.includes(words));
 
     if (message.channel.type === ChannelType.DM) {
-      return `There are ${filtered.size} instances of "${words}" in our correspondence.`;
+      return `There are ${filtered.size} messages containing "${words}" in the last 100 messages of our correspondence.`;
     } else {
-      return `There are ${filtered.size} instances of "${words}" in channel "${message.channel.name}"`;
+      return `There are ${filtered.size} messages containing "${words}" in the last 100 messages of channel "${message.channel.name}"`;
     }
   }
 }
