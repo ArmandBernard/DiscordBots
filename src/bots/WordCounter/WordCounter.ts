@@ -40,8 +40,10 @@ export class WordCounter extends BotBase {
     this.client.on("messageCreate", async (message) => {
       // if it mentions WordCounter
       if (this.id && message.mentions.has(this.id)) {
-        // reply with the rat gif
-        const reply = await WordCounter.parseRequest(message);
+        // parse their request
+        const request = WordCounter.parseRequest(message);
+
+        const reply = await WordCounter.prepareReply(message, request);
 
         this.sendReply(reply, message.channel);
       }
@@ -65,25 +67,30 @@ export class WordCounter extends BotBase {
     }
   }
 
-  static async parseRequest(message: Message): Promise<string> {
+  static parseRequest(message: Message): string {
     const content = message.content;
 
     // remove mentions
-    const words = content.replace(WordCounter.mentionsRegex, "").trim();
+    return content.replace(WordCounter.mentionsRegex, "").trim();
+  }
 
+  static async prepareReply(
+    message: Message,
+    request: string
+  ): Promise<string> {
     // get all messages
     const messages = (await message.channel.messages.fetch({
       limit: 100,
     })) as Collection<string, Message>;
 
-    const filtered = messages.filter((m) => m.content.includes(words));
+    const filtered = messages.filter((m) => m.content.includes(request));
 
     if (message.channel.type === ChannelType.DM) {
-      return `There are ${filtered.size} messages containing "${words}" in the last 100 messages of our correspondence.`;
+      return `There are ${filtered.size} messages containing "${request}" in the last 100 messages of our correspondence.`;
     } else {
       return `There are ${
         filtered.size
-      } messages containing "${words}" in the last 100 messages of ${message.channel.toString()}`;
+      } messages containing "${request}" in the last 100 messages of ${message.channel.toString()}`;
     }
   }
 }
