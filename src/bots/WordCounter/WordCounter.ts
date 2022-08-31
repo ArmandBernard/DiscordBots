@@ -7,15 +7,13 @@ import {
 import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
 
-const regex = /\brat\b/i;
-
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
   IntentsBitField.Flags.GuildMessages,
   IntentsBitField.Flags.MessageContent,
 ];
 
-interface RatBotProps {
+interface WordCounterProps {
   /**
    * The token the bot will use to log in
    */
@@ -30,18 +28,18 @@ interface RatBotProps {
  * A bot that will reply to messages containing the word "rat" with a gif of a
  * spinning rat. Fun.
  */
-export class RatBot extends BotBase {
-  constructor(props: RatBotProps) {
+export class WordCounter extends BotBase {
+  constructor(props: WordCounterProps) {
     super({
       ...props,
-      name: "ratBot",
+      name: "WordCounter",
       intents,
     });
 
     // when a message is created
     this.client.on("messageCreate", (message) => {
       // if it contains rat
-      if (RatBot.containsRat(message.content)) {
+      if (WordCounter.containsRat(message.content)) {
         // reply with the rat gif
         this.replyWithGif(message);
       }

@@ -4,10 +4,6 @@ import Discord, { GatewayIntentBits, IntentsBitField } from "discord.js";
 
 export type BotBaseProps = {
   /**
-   * The id of the application, useful for preventing the bot from triggering itself.
-   */
-  id: string;
-  /**
    * The name of the bot
    */
   name: string;
@@ -35,7 +31,7 @@ export abstract class BotBase {
   client: Discord.Client;
   logger: ILogger;
   name: string;
-  id: string;
+  id: string | undefined;
   private token: string;
 
   private _loggedIn = false;
@@ -57,7 +53,6 @@ export abstract class BotBase {
     this.logger = props.logger;
     this.token = props.token;
     this.name = props.name;
-    this.id = props.id;
 
     let client: Discord.Client;
     try {
@@ -74,6 +69,7 @@ export abstract class BotBase {
 
     client.on("ready", () => {
       this.logger.log(`${this.name} logged in successfully`);
+      this.id = this.id = client.user?.id;
     });
   }
 
