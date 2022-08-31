@@ -31,5 +31,10 @@ describe("WordCounter", () => {
         expect(WordCounter.parseRequest(a)).toBe(b);
       });
     });
+    it("removes all mentions", () => {
+      expect(
+        WordCounter.parseRequest("I think <@&1234> is better than <@&5678>")
+      ).toBe("I think  is better than");
+    });
   });
 });
