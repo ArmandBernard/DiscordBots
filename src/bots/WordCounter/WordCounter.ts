@@ -1,8 +1,9 @@
 import {
-  ChannelType,
+  TextBasedChannel,
   GatewayIntentBits,
   IntentsBitField,
   Message,
+  ChannelType,
 } from "discord.js";
 import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
@@ -24,10 +25,8 @@ interface WordCounterProps {
   logger: ILogger;
 }
 
-/**
- * A bot that will reply to messages containing the word "rat" with a gif of a
- * spinning rat. Fun.
- */
+const mentionsRegex = /<@\w+>/;
+
 export class WordCounter extends BotBase {
   constructor(props: WordCounterProps) {
     super({
@@ -37,30 +36,27 @@ export class WordCounter extends BotBase {
     });
 
     // when a message is created
-    this.client.on("messageCreate", (message) => {
-      // if it contains rat
-      if (WordCounter.containsRat(message.content)) {
+    this.client.on("messageCreate", async (message) => {
+      // if it mentions WordCounter
+      if (this.id && message.mentions.has(this.id)) {
         // reply with the rat gif
-        this.replyWithGif(message);
+        const reply = await WordCounter.parseRequest(message);
+
+        this.sendReply(reply, message.channel);
       }
     });
 
     this.login();
   }
 
-  /**
-   * Reply to a user's message with a gif of a spinning rat
-   * @param message the message to reply to
-   */
-  replyWithGif(message: Message) {
+  sendReply(reply: string, channel: TextBasedChannel) {
     try {
-      // post the rat gif
-      message.channel.send("https://i.imgur.com/KqvqLg3.gif");
+      channel.send(reply);
 
-      if (message.channel.type !== ChannelType.DM) {
-        this.logger.log(`posted a reply in ${message.channel.name}`);
-      } else {
+      if (channel.type === ChannelType.DM) {
         this.logger.log("posted a reply to a user in DMs");
+      } else {
+        this.logger.log(`posted a reply in ${channel.name}`);
       }
     } catch (err) {
       this.logger.error("failed to post reply");
@@ -68,12 +64,21 @@ export class WordCounter extends BotBase {
     }
   }
 
-  /**
-   * Check if the message contains "rat"
-   * @param message the message to check
-   * @returns true if the message contains "rat"
-   */
-  static containsRat(message: string): boolean {
-    return regex.exec(message) != null;
+  static async parseRequest(message: Message): Promise<string> {
+    const content = message.content;
+
+    // remove mentions
+    const words = content.replace(mentionsRegex, "").trim();
+
+    // get all messages
+    const messages = await message.channel.messages.fetch({ limit: 100 });
+
+    const filtered = messages.filter((m) => m.content.includes(words));
+
+    if (message.channel.type === ChannelType.DM) {
+      return `There are ${filtered.size} instances of "${words}" in our correspondence.`;
+    } else {
+      return `There are ${filtered.size} instances of "${words}" in channel "${message.channel.name}"`;
+    }
   }
 }
