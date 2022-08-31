@@ -81,7 +81,9 @@ export class WordCounter extends BotBase {
     if (message.channel.type === ChannelType.DM) {
       return `There are ${filtered.size} messages containing "${words}" in the last 100 messages of our correspondence.`;
     } else {
-      return `There are ${filtered.size} messages containing "${words}" in the last 100 messages of channel "${message.channel.name}"`;
+      return `There are ${
+        filtered.size
+      } messages containing "${words}" in the last 100 messages of ${message.channel.toString()}`;
     }
   }
 }
