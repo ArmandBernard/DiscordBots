@@ -13,6 +13,9 @@ const appSettingsTemplate: IAppSettings = {
     token: "",
     weatherApiToken: "",
   },
+  wordCounter: {
+    token: "",
+  },
 };
 
 /**
