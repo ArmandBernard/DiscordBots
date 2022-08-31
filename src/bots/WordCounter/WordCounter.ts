@@ -26,7 +26,7 @@ interface WordCounterProps {
   logger: ILogger;
 }
 
-const mentionsRegex = /<@\w+>/;
+const mentionsRegex = /<@&\w+>/;
 
 export class WordCounter extends BotBase {
   constructor(props: WordCounterProps) {
