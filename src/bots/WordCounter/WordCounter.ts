@@ -41,7 +41,7 @@ export class WordCounter extends BotBase {
       // if it mentions WordCounter
       if (this.id && message.mentions.has(this.id)) {
         // parse their request
-        const request = WordCounter.parseRequest(message);
+        const request = WordCounter.parseRequest(message.content);
 
         const reply = await WordCounter.prepareReply(message, request);
 
@@ -67,11 +67,9 @@ export class WordCounter extends BotBase {
     }
   }
 
-  static parseRequest(message: Message): string {
-    const content = message.content;
-
+  static parseRequest(request: string): string {
     // remove mentions
-    return content.replace(WordCounter.mentionsRegex, "").trim();
+    return request.replace(WordCounter.mentionsRegex, "").trim();
   }
 
   static async prepareReply(

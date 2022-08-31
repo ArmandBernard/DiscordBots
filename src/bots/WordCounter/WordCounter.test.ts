@@ -1,5 +1,12 @@
 import { WordCounter } from "./WordCounter";
 
+const expectedParsedWords = [
+  ["word", "word"],
+  [" word ", "word"],
+  [" multiple words ", "multiple words"],
+  ["HQW£%U£J$%^J", "HQW£%U£J$%^J"],
+];
+
 describe("WordCounter", () => {
   describe("regex for finding mentions", () => {
     it("finds a mention at the start", () => {
@@ -16,6 +23,13 @@ describe("WordCounter", () => {
       const message = "I think <@&1014610397430550604>'s code is broken";
 
       expect(WordCounter.mentionsRegex.test(message)).toBe(true);
+    });
+  });
+  describe("request parser", () => {
+    describe("correctly pulls intended words", () => {
+      it.each(expectedParsedWords)("takes '%s' and returns '%s'", (a, b) => {
+        expect(WordCounter.parseRequest(a)).toBe(b);
+      });
     });
   });
 });
