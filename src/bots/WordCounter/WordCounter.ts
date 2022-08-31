@@ -4,6 +4,7 @@ import {
   IntentsBitField,
   Message,
   ChannelType,
+  Collection,
 } from "discord.js";
 import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
@@ -71,7 +72,9 @@ export class WordCounter extends BotBase {
     const words = content.replace(mentionsRegex, "").trim();
 
     // get all messages
-    const messages = await message.channel.messages.fetch({ limit: 100 });
+    const messages = (await message.channel.messages.fetch({
+      limit: 100,
+    })) as Collection<string, Message>;
 
     const filtered = messages.filter((m) => m.content.includes(words));
 
