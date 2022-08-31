@@ -26,9 +26,9 @@ interface WordCounterProps {
   logger: ILogger;
 }
 
-const mentionsRegex = /<@&\w+>/;
-
 export class WordCounter extends BotBase {
+  static mentionsRegex = /<@&\w+>/;
+
   constructor(props: WordCounterProps) {
     super({
       ...props,
@@ -69,7 +69,7 @@ export class WordCounter extends BotBase {
     const content = message.content;
 
     // remove mentions
-    const words = content.replace(mentionsRegex, "").trim();
+    const words = content.replace(WordCounter.mentionsRegex, "").trim();
 
     // get all messages
     const messages = (await message.channel.messages.fetch({
