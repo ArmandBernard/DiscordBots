@@ -72,6 +72,10 @@ export class WordCounter extends BotBase {
     return request.replace(WordCounter.mentionsRegex, "").trim();
   }
 
+  static checkMessage = (message: Message, request: string): boolean => {
+    return message.content.includes(request);
+  };
+
   static async prepareReply(
     message: Message,
     request: string
@@ -81,7 +85,9 @@ export class WordCounter extends BotBase {
       limit: 100,
     })) as Collection<string, Message>;
 
-    const filtered = messages.filter((m) => m.content.includes(request));
+    const filtered = messages.filter((m) =>
+      WordCounter.checkMessage(m, request)
+    );
 
     if (message.channel.type === ChannelType.DM) {
       return `There are ${filtered.size} messages containing "${request}" in the last 100 messages of our correspondence.`;
