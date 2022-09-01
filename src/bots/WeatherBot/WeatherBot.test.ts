@@ -13,25 +13,27 @@ const validPhrases = [
 
 describe("WeatherBot", () => {
   describe("parseRequest", () => {
-    it("will pull city for all valid phrases", () => {
-      validPhrases.forEach((phrase) => {
-        const request = WeatherBot.parseRequest(phrase[0], new MockLogger());
+    describe("will pull city for all valid phrases", () => {
+      it.each(validPhrases)(
+        "'%s' finds city '%s'",
+        (phrase: string, expectedCity: string) => {
+          const request = WeatherBot.parseRequest(phrase, new MockLogger());
 
-        expect(request.city).toBe(phrase[1]);
-      });
+          expect(request.city).toBe(expectedCity);
+        }
+      );
     });
 
-    it("will ignore invalid city names", () => {
-      invalidCityNames.forEach((cityName) => {
+    describe("will ignore invalid city names", () => {
+      it.each(invalidCityNames)("'%s' is invalid", (invalidName) => {
         const request = WeatherBot.parseRequest(
-          `weather in ${cityName}`,
+          `weather in ${invalidName}`,
           new MockLogger()
         );
 
         expect(request.city).toBeUndefined();
       });
     });
-
     it("will use fahrenheit when asked", () => {
       const cityName = "Paris";
 
