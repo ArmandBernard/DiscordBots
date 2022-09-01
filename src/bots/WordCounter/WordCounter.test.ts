@@ -18,6 +18,12 @@ const messageParserCases: [string, string, boolean, string][] = [
   ["Hi, how are you?", "ou", false, "it's not a complete word"],
   ["Hi, how are you?", "HOW", true, "it should not be case sensitive"],
   ["Hi, how are you?", "how are", true, "it should handle multiple words"],
+  [
+    "Hi, how are you?",
+    "you?",
+    true,
+    "it should handle regex characters (requires escaping)",
+  ],
 ];
 
 describe("WordCounter", () => {
