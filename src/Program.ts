@@ -5,6 +5,7 @@ import { Logger } from "./Logger/Logger";
 import { ILogger } from "./Logger/ILogger";
 import { WeatherBot } from "./bots/WeatherBot/WeatherBot";
 import { IAppSettings } from "./AppSettings/IAppSettings";
+import { WordCounter } from "./bots/WordCounter/WordCounter";
 
 export class Program {
   /**
@@ -47,6 +48,17 @@ export class Program {
       });
     } else {
       logger.warn("no WeatherBot token found");
+    }
+
+    const wordCounterToken = settings.wordCounter?.token;
+
+    if (wordCounterToken) {
+      new WordCounter({
+        token: wordCounterToken,
+        logger,
+      });
+    } else {
+      logger.warn("no WordCounter token found");
     }
   }
 

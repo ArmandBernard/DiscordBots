@@ -13,4 +13,9 @@ export interface IAppSettings {
         weatherApiToken: string | undefined;
       }
     | undefined;
+  wordCounter:
+    | {
+        token: string | undefined;
+      }
+    | undefined;
 }
