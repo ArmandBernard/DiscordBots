@@ -73,7 +73,9 @@ export class WordCounter extends BotBase {
   }
 
   static checkMessage = (message: Message, request: string): boolean => {
-    return message.content.includes(request);
+    const containsRequest = new RegExp(`\\b${request}\\b`, "i");
+
+    return containsRequest.test(message.content);
   };
 
   static async prepareReply(
