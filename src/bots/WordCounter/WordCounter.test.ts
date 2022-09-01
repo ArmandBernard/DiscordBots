@@ -14,7 +14,7 @@ const makeMsg = (content: string): Message => {
 
 const messageParserCases: [string, string, boolean, string][] = [
   ["Hi, how are you?", "are", true, "it's a full word"],
-  ["Hi, how are you?", "Hi,", true, "it includes a comma"],
+  ["Hi, how are you?", "Hi,", true, "it includes a valid comma"],
   ["Hi, how are you?", "ou", false, "it's not a complete word"],
   ["Hi, how are you?", "HOW", true, "it should not be case sensitive"],
   ["Hi, how are you?", "how are", true, "it should handle multiple words"],

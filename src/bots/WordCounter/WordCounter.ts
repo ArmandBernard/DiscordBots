@@ -72,8 +72,14 @@ export class WordCounter extends BotBase {
     return request.replace(WordCounter.mentionsRegex, "").trim();
   }
 
+  static escapeRegex(str: string) {
+    return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+  }
+
   static checkMessage = (message: Message, request: string): boolean => {
-    const containsRequest = new RegExp(`\\b${request}\\b`, "i");
+    const escapedRequest = this.escapeRegex(request);
+
+    const containsRequest = new RegExp(`(^|\\W)${escapedRequest}(\\W|$)`, "i");
 
     return containsRequest.test(message.content);
   };
