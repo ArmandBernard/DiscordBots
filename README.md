@@ -12,7 +12,11 @@ The following bots are already working:
 
 - RatBot: A bot that looks out of the word rat, and comments a rat gif if it sees it
 - WeatherBot: Tells you the current weather for a given city
+- WordCounter: A bot that tells you how many times a word has been said.
 
-I plan to make the following bots in the future:
+The following is upcoming:
 
-- WordCounter: A bot that tells you how many times you've used a (bad) word.
+- Improvements to the WordCounter:
+  - Count by person
+  - Count of usages alongside count of messages
+  - Greater than 100 message history
