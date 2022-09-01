@@ -1,5 +1,6 @@
 import { WeatherBot } from "./WeatherBot";
 import { MockLogger } from "../../Logger/MockLogger";
+import { ApiErrorResponse } from "./WeatherApi";
 
 const invalidCityNames = ["", " ", "."];
 
@@ -41,6 +42,22 @@ describe("WeatherBot", () => {
 
       expect(request.city).toBe(cityName);
       expect(request.useFahrenheit).toBe(true);
+    });
+  });
+  describe("composeReply", () => {
+    it("can handle random errors", () => {
+      const request = { city: "Somewhere", useFahrenheit: false };
+
+      const response: ApiErrorResponse = {
+        error: {
+          code: 1000,
+          message: "This is a random error",
+        },
+      };
+
+      const reply = WeatherBot.composeReply(request, response);
+
+      expect(reply).toContain(response.error.message);
     });
   });
 });
