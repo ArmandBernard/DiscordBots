@@ -62,7 +62,7 @@ export class WeatherBot extends BotBase {
 
       const result = await WeatherBot.callApi(this.weatherKey, request.city);
 
-      message.channel.send(WeatherBot.ComposeReply(request, result));
+      message.channel.send(WeatherBot.composeReply(request, result));
     });
 
     this.login();
@@ -116,7 +116,7 @@ export class WeatherBot extends BotBase {
    * @param data the ApiResponse
    * @returns the message to send
    */
-  static ComposeReply(request: WeatherRequest, data: ApiResponse): string {
+  static composeReply(request: WeatherRequest, data: ApiResponse): string {
     if (isApiErrorResponse(data)) {
       switch (data.error.code) {
         case 1006:
@@ -142,7 +142,7 @@ ${temp} (feels like ${feelsLike})
   }
 }
 
-interface WeatherRequest {
+export interface WeatherRequest {
   city: string | undefined;
   useFahrenheit: boolean;
 }

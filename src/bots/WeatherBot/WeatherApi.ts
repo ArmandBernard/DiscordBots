@@ -5,7 +5,7 @@ export const apiUrl = "https://api.weatherapi.com/v1";
 
 export type ApiResponse = ApiSuccessResponse | ApiErrorResponse;
 
-interface ApiErrorResponse {
+export interface ApiErrorResponse {
   error: ApiError;
 }
 
@@ -22,7 +22,7 @@ interface ApiError {
   message: string;
 }
 
-interface ApiSuccessResponse {
+export interface ApiSuccessResponse {
   location: ApiLocation;
   current: CurrentWeather;
 }
