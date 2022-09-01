@@ -38,8 +38,12 @@ export class WordCounter extends BotBase {
 
     // when a message is created
     this.client.on("messageCreate", async (message) => {
-      // if it mentions WordCounter
-      if (this.id && message.mentions.has(this.id)) {
+      // if it mentions WordCounter and is not from the bot
+      if (
+        this.id &&
+        message.mentions.has(this.id) &&
+        message.author.id !== this.id
+      ) {
         // parse their request
         const request = WordCounter.parseRequest(message.content);
 
