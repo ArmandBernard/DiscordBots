@@ -27,7 +27,7 @@ interface WordCounterProps {
 }
 
 export class WordCounter extends BotBase {
-  static mentionsRegex = /<@&\w+>/g;
+  static mentionsRegex = /<@&\d+>/g;
 
   constructor(props: WordCounterProps) {
     super({
