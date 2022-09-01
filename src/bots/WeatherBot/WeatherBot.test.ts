@@ -45,6 +45,20 @@ describe("WeatherBot", () => {
     });
   });
   describe("composeReply", () => {
+    it("can handle place not found errors", () => {
+      const request = { city: "Somewhere", useFahrenheit: false };
+
+      const response: ApiErrorResponse = {
+        error: {
+          code: 1006,
+          message: "The place wasn't found :(",
+        },
+      };
+
+      const reply = WeatherBot.composeReply(request, response);
+
+      expect(reply).toContain("I don't know where that is.");
+    });
     it("can handle random errors", () => {
       const request = { city: "Somewhere", useFahrenheit: false };
 
