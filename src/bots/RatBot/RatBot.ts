@@ -34,7 +34,7 @@ export class RatBot extends BotBase {
   constructor(props: RatBotProps) {
     super({
       ...props,
-      name: "ratBot",
+      name: "RatBot",
       intents,
     });
 
