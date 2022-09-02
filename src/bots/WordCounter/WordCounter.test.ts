@@ -10,8 +10,12 @@ const expectedParsedWords = [
 
 const botId = "12345";
 
-const makeMsg = (content: string, id?: string): Message => {
-  return { content, author: { id } } as Message;
+const makeMsg = (content: string, id?: string, has = false): Message => {
+  return {
+    content,
+    author: { id },
+    mentions: { has: (_a, _b) => has },
+  } as Message;
 };
 
 const messageParserCases: [string, string, boolean, string][] = [
@@ -62,6 +66,15 @@ describe("WordCounter", () => {
     it("returns false because the bot is the author", () => {
       expect(
         WordCounter.checkMessage(makeMsg("word", botId), "word", botId)
+      ).toBe(false);
+    });
+    it("returns false if the bot is mentioned", () => {
+      expect(
+        WordCounter.checkMessage(
+          makeMsg("word", undefined, true),
+          "word",
+          botId
+        )
       ).toBe(false);
     });
   });
