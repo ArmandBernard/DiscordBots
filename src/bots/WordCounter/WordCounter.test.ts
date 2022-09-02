@@ -33,9 +33,18 @@ describe("WordCounter", () => {
         expect(WordCounter.parseRequest(a)).toBe(b);
       });
     });
-    it("removes all mentions", () => {
+    it("removes user mentions", () => {
       expect(
-        WordCounter.parseRequest("I think <@&1234> is better than <@&5678>")
+        WordCounter.parseRequest(
+          "I think <@1014610437430550604> is better than <@1014610437430550604>\n<@1014610437430550604>"
+        )
+      ).toBe("I think  is better than");
+    });
+    it("removes role mentions", () => {
+      expect(
+        WordCounter.parseRequest(
+          "I think <@&1014610437430550604> is better than <@&1014610437430550604>\n<@&1014610437430550604>"
+        )
       ).toBe("I think  is better than");
     });
   });
