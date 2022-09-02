@@ -8,8 +8,10 @@ const expectedParsedWords = [
   ["HQW£%U£J$%^J", "HQW£%U£J$%^J"],
 ];
 
-const makeMsg = (content: string): Message => {
-  return { content } as Message;
+const botId = "12345";
+
+const makeMsg = (content: string, id?: string): Message => {
+  return { content, author: { id } } as Message;
 };
 
 const messageParserCases: [string, string, boolean, string][] = [
@@ -52,10 +54,15 @@ describe("WordCounter", () => {
     it.each(messageParserCases)(
       "When given '%s' and looking for '%s', it returns '%s' because %s.",
       (message, search, expectedResult) => {
-        expect(WordCounter.checkMessage(makeMsg(message), search)).toBe(
+        expect(WordCounter.checkMessage(makeMsg(message), search, botId)).toBe(
           expectedResult
         );
       }
     );
+    it("returns false because the bot is the author", () => {
+      expect(
+        WordCounter.checkMessage(makeMsg("word", botId), "word", botId)
+      ).toBe(false);
+    });
   });
 });
