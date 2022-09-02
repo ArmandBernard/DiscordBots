@@ -27,6 +27,9 @@ interface WordCounterProps {
   logger: ILogger;
 }
 
+const userMentionRegex = new RegExp(MessageMentions.UsersPattern.source, "g");
+const rolesMentionRegex = new RegExp(MessageMentions.RolesPattern.source, "g");
+
 export class WordCounter extends BotBase {
   constructor(props: WordCounterProps) {
     super({
@@ -71,8 +74,11 @@ export class WordCounter extends BotBase {
   }
 
   static parseRequest(request: string): string {
-    // remove mentions
-    return request.replace(MessageMentions.UsersPattern, "").trim();
+    // remove mentions of both users and roles
+    return request
+      .replace(userMentionRegex, "")
+      .replace(rolesMentionRegex, "")
+      .trim();
   }
 
   static escapeRegex(str: string) {
