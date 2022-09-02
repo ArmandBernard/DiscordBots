@@ -90,13 +90,17 @@ export class WordCounter extends BotBase {
     request: string,
     myId: string
   ): boolean => {
-    if (message.author.id === myId) {
+    // early return if this bot is the author or the bot is mentioned
+    if (message.author.id === myId || message.mentions.has(myId)) {
       return false;
     }
+    // escape the request so it cna be safely put in regex
     const escapedRequest = this.escapeRegex(request);
 
+    // create the search regex
     const containsRequest = new RegExp(`(^|\\W)${escapedRequest}(\\W|$)`, "i");
 
+    // check the message
     return containsRequest.test(message.content);
   };
 
