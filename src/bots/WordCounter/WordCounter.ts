@@ -5,6 +5,7 @@ import {
   Message,
   ChannelType,
   Collection,
+  MessageMentions,
 } from "discord.js";
 import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
@@ -27,8 +28,6 @@ interface WordCounterProps {
 }
 
 export class WordCounter extends BotBase {
-  static mentionsRegex = /<@&\d+>/g;
-
   constructor(props: WordCounterProps) {
     super({
       ...props,
@@ -73,7 +72,7 @@ export class WordCounter extends BotBase {
 
   static parseRequest(request: string): string {
     // remove mentions
-    return request.replace(WordCounter.mentionsRegex, "").trim();
+    return request.replace(MessageMentions.UsersPattern, "").trim();
   }
 
   static escapeRegex(str: string) {
