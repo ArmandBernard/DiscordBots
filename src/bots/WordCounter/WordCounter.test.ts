@@ -14,6 +14,7 @@ const makeMsg = (content: string, id?: string, has = false): Message => {
   return {
     content,
     author: { id },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mentions: { has: (_a, _b) => has },
   } as Message;
 };
