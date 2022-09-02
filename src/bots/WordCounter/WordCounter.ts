@@ -49,7 +49,7 @@ export class WordCounter extends BotBase {
         // parse their request
         const request = WordCounter.parseRequest(message.content);
 
-        const reply = await WordCounter.prepareReply(message, request);
+        const reply = await WordCounter.prepareReply(message, request, this.id);
 
         this.sendReply(reply, message.channel);
       }
@@ -85,7 +85,14 @@ export class WordCounter extends BotBase {
     return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
   }
 
-  static checkMessage = (message: Message, request: string): boolean => {
+  static checkMessage = (
+    message: Message,
+    request: string,
+    myId: string
+  ): boolean => {
+    if (message.author.id === myId) {
+      return false;
+    }
     const escapedRequest = this.escapeRegex(request);
 
     const containsRequest = new RegExp(`(^|\\W)${escapedRequest}(\\W|$)`, "i");
@@ -95,7 +102,8 @@ export class WordCounter extends BotBase {
 
   static async prepareReply(
     message: Message,
-    request: string
+    request: string,
+    myId: string
   ): Promise<string> {
     // get all messages
     const messages = (await message.channel.messages.fetch({
@@ -103,7 +111,7 @@ export class WordCounter extends BotBase {
     })) as Collection<string, Message>;
 
     const filtered = messages.filter((m) =>
-      WordCounter.checkMessage(m, request)
+      WordCounter.checkMessage(m, request, myId)
     );
 
     if (message.channel.type === ChannelType.DM) {
