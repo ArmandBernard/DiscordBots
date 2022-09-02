@@ -5,6 +5,7 @@ import {
   Message,
   ChannelType,
   Collection,
+  MessageMentions,
 } from "discord.js";
 import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
@@ -26,9 +27,10 @@ interface WordCounterProps {
   logger: ILogger;
 }
 
-export class WordCounter extends BotBase {
-  static mentionsRegex = /<@&\d+>/g;
+const userMentionRegex = new RegExp(MessageMentions.UsersPattern.source, "g");
+const rolesMentionRegex = new RegExp(MessageMentions.RolesPattern.source, "g");
 
+export class WordCounter extends BotBase {
   constructor(props: WordCounterProps) {
     super({
       ...props,
@@ -72,8 +74,11 @@ export class WordCounter extends BotBase {
   }
 
   static parseRequest(request: string): string {
-    // remove mentions
-    return request.replace(WordCounter.mentionsRegex, "").trim();
+    // remove mentions of both users and roles
+    return request
+      .replace(userMentionRegex, "")
+      .replace(rolesMentionRegex, "")
+      .trim();
   }
 
   static escapeRegex(str: string) {
