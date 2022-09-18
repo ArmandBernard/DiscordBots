@@ -3,9 +3,10 @@ import {
   IntentsBitField,
   Message,
   ChannelType,
-  Collection,
   MessageMentions,
+  TextChannel,
 } from "discord.js";
+import { MessageFetcher } from "../../Services/MessageFetcher";
 import { BotBase } from "../BotBase";
 
 const intents: GatewayIntentBits[] = [
@@ -64,6 +65,7 @@ export class WordCounter extends BotBase {
     return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
   }
 
+  // filter out messages not containing the words
   static checkMessage = (
     message: Message,
     request: string,
@@ -88,21 +90,24 @@ export class WordCounter extends BotBase {
     request: string,
     myId: string
   ): Promise<string> {
-    // get all messages
-    const messages = (await message.channel.messages.fetch({
-      limit: 100,
-    })) as Collection<string, Message>;
+    // make a limit of 7 days
+    const dateLimit = new Date();
+    dateLimit.setDate(dateLimit.getDate() - 7);
 
-    const filtered = messages.filter((m) =>
-      WordCounter.checkMessage(m, request, myId)
+    const messages = await MessageFetcher.getAllMessages(
+      message.channel as TextChannel,
+      (m) => WordCounter.checkMessage(m, request, myId),
+      dateLimit
     );
 
     if (message.channel.type === ChannelType.DM) {
-      return `There are ${filtered.size} messages containing "${request}" in the last 100 messages of our correspondence.`;
+      return `There are ${
+        messages.length
+      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} in our correspondence.`;
     } else {
       return `There are ${
-        filtered.size
-      } messages containing "${request}" in the last 100 messages of ${message.channel.toString()}`;
+        messages.length
+      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} in #${message.channel.toString()}`;
     }
   }
 }
