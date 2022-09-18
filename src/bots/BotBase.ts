@@ -102,7 +102,7 @@ export abstract class BotBase {
       if (channel.type === ChannelType.DM) {
         this.logger.log("posted a message to a users DMs");
       } else {
-        this.logger.log(`posted a message in ${channel.name}`);
+        this.logger.log(`posted a message in #${channel.name}`);
       }
       return true;
     } catch (err) {
