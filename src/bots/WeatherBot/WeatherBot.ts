@@ -51,7 +51,7 @@ export class WeatherBot extends BotBase {
 
       if (!request.city) {
         this.sendMessage(
-          "Please format your request like this:\n'Weather in <cityname>( in fahrenheit)'",
+          "Please format your request like this:\n'Weather in <cityname>[ in fahrenheit]'",
           message.channel
         );
         return;
