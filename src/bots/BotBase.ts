@@ -4,6 +4,7 @@ import Discord, {
   ChannelType,
   GatewayIntentBits,
   IntentsBitField,
+  Message,
   TextBasedChannel,
 } from "discord.js";
 import { NamedLogger } from "../Logger/NamedLogger";
@@ -91,22 +92,48 @@ export abstract class BotBase {
 
   /**
    * Send a message to a channel, with error handling
-   * @param message
+   * @param messageText the text the message should contain
    * @param channel the channel to send to
-   * @returns true if successful, false otherwise
+   * @returns the sent message if successful, otherwise undefined
    */
-  sendMessage(message: string, channel: TextBasedChannel): boolean {
+  async sendMessage(
+    messageText: string,
+    channel: TextBasedChannel
+  ): Promise<Message | undefined> {
     try {
-      channel.send(message);
+      const sentMessage = channel.send(messageText);
 
       if (channel.type === ChannelType.DM) {
         this.logger.log("posted a message to a users DMs");
       } else {
         this.logger.log(`posted a message in #${channel.name}`);
       }
-      return true;
+      return sentMessage;
     } catch (err) {
       this.logger.error("failed to post message");
+      this.logger.error((err as Error).message);
+      return undefined;
+    }
+  }
+
+  /**
+   * Send a message to a channel, with error handling
+   * @param message the message to edit
+   * @param newText the new text
+   * @returns true if successful, false otherwise
+   */
+  async editMessage(message: Message, newText: string): Promise<boolean> {
+    try {
+      await message.edit(newText);
+
+      if (message.channel.type === ChannelType.DM) {
+        this.logger.log("edited a message in a users DMs");
+      } else {
+        this.logger.log(`edited a message in #${message.channel.name}`);
+      }
+      return true;
+    } catch (err) {
+      this.logger.error("failed to edit a message");
       this.logger.error((err as Error).message);
       return false;
     }

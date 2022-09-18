@@ -44,9 +44,28 @@ export class WordCounter extends BotBase {
         // parse their request
         const request = WordCounter.parseRequest(message.content);
 
+        let sentMessage: Message | undefined;
+
+        if (message.channel.type === ChannelType.DM) {
+          sentMessage = await this.sendMessage(
+            `Looking for the word(s) "${request}" in the last year of messages in these DMs...`,
+            message.channel
+          );
+        } else {
+          sentMessage = await this.sendMessage(
+            `Looking for the word(s) "${request}" in the last year of messages in ${message.channel.toString()}...`,
+            message.channel
+          );
+        }
+
+        if (!sentMessage) {
+          return;
+        }
+
         const reply = await WordCounter.prepareReply(message, request, this.id);
 
-        this.sendMessage(reply, message.channel);
+        // edit the sent message
+        this.editMessage(sentMessage, reply);
       }
     });
 
@@ -92,7 +111,7 @@ export class WordCounter extends BotBase {
   ): Promise<string> {
     // make a limit of 7 days
     const dateLimit = new Date();
-    dateLimit.setDate(dateLimit.getDate() - 30);
+    dateLimit.setDate(dateLimit.getDate() - 365);
 
     const { messages, totalParsed } = await MessageFetcher.getAllMessages(
       message.channel as TextChannel,
