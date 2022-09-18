@@ -3,9 +3,10 @@ import {
   IntentsBitField,
   Message,
   ChannelType,
-  Collection,
   MessageMentions,
+  TextBasedChannel,
 } from "discord.js";
+import { MessageFetcher } from "../../Services/MessageFetcher";
 import { BotBase } from "../BotBase";
 
 const intents: GatewayIntentBits[] = [
@@ -43,9 +44,20 @@ export class WordCounter extends BotBase {
         // parse their request
         const request = WordCounter.parseRequest(message.content);
 
+        // tell the user to wait
+        const sentMessage = await this.sendSearchingMessage(
+          request,
+          message.channel
+        );
+
+        if (!sentMessage) {
+          return;
+        }
+
         const reply = await WordCounter.prepareReply(message, request, this.id);
 
-        this.sendMessage(reply, message.channel);
+        // edit the sent message
+        this.editMessage(sentMessage, reply);
       }
     });
 
@@ -64,6 +76,24 @@ export class WordCounter extends BotBase {
     return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
   }
 
+  /**
+   * Tell the user to wait while we get check the messages
+   * @param request what the user is after
+   * @param channel the channel we're searching through
+   * @returns the sent message, so it can be edited later
+   */
+  async sendSearchingMessage(
+    request: string,
+    channel: TextBasedChannel
+  ): Promise<Message<boolean> | undefined> {
+    const messageText = `Looking for the word(s) "${request}" in the last year of messages in ${
+      channel.type === ChannelType.DM ? "these DMs" : channel.toString()
+    }...`;
+
+    return await this.sendMessage(messageText, channel);
+  }
+
+  // filter out messages not containing the words
   static checkMessage = (
     message: Message,
     request: string,
@@ -88,21 +118,24 @@ export class WordCounter extends BotBase {
     request: string,
     myId: string
   ): Promise<string> {
-    // get all messages
-    const messages = (await message.channel.messages.fetch({
-      limit: 100,
-    })) as Collection<string, Message>;
+    // make a limit of 7 days
+    const dateLimit = new Date();
+    dateLimit.setDate(dateLimit.getDate() - 365);
 
-    const filtered = messages.filter((m) =>
-      WordCounter.checkMessage(m, request, myId)
+    const { messages, totalParsed } = await MessageFetcher.getAllMessages(
+      message.channel,
+      dateLimit,
+      (m) => WordCounter.checkMessage(m, request, myId)
     );
 
     if (message.channel.type === ChannelType.DM) {
-      return `There are ${filtered.size} messages containing "${request}" in the last 100 messages of our correspondence.`;
+      return `There are ${
+        messages.length
+      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} (${totalParsed} messages) in our correspondence.`;
     } else {
       return `There are ${
-        filtered.size
-      } messages containing "${request}" in the last 100 messages of ${message.channel.toString()}`;
+        messages.length
+      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} (${totalParsed} messages) in ${message.channel.toString()}`;
     }
   }
 }
