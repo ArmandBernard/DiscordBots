@@ -23,10 +23,6 @@ interface WeatherBotProps {
    */
   token: string;
   weatherKey: string;
-  /**
-   * The logger the bot will use to log messages
-   */
-  logger: ILogger;
 }
 
 export class WeatherBot extends BotBase {
@@ -54,15 +50,19 @@ export class WeatherBot extends BotBase {
       const request = WeatherBot.parseRequest(message.content, this.logger);
 
       if (!request.city) {
-        message.channel.send(
-          "Please format your request like this:\n'Weather in <cityname>( in fahrenheit)'"
+        this.sendMessage(
+          "Please format your request like this:\n'Weather in <cityname>[ in fahrenheit]'",
+          message.channel
         );
         return;
       }
 
       const result = await WeatherBot.callApi(this.weatherKey, request.city);
 
-      message.channel.send(WeatherBot.composeReply(request, result));
+      this.sendMessage(
+        WeatherBot.composeReply(request, result),
+        message.channel
+      );
     });
 
     this.login();

@@ -1,6 +1,12 @@
 import { ILogger } from "./ILogger";
 
-export class Logger implements ILogger {
+export class NamedLogger implements ILogger {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
   log(message: string) {
     console.log(this.constructString("INFO", message));
   }
@@ -12,6 +18,6 @@ export class Logger implements ILogger {
   }
 
   constructString(level: "INFO" | "WARN" | "ERROR", message: string) {
-    return `[${level}][${new Date().toISOString()}] ${message}`;
+    return `[${level}][${new Date().toISOString()}][${this.name}] ${message}`;
   }
 }

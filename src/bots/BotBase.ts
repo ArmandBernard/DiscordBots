@@ -1,6 +1,12 @@
 import { ILogger } from "../Logger/ILogger";
 
-import Discord, { GatewayIntentBits, IntentsBitField } from "discord.js";
+import Discord, {
+  ChannelType,
+  GatewayIntentBits,
+  IntentsBitField,
+  TextBasedChannel,
+} from "discord.js";
+import { NamedLogger } from "../Logger/NamedLogger";
 
 export type BotBaseProps = {
   /**
@@ -11,10 +17,6 @@ export type BotBaseProps = {
    * The token the bot will use to log in
    */
   token: string;
-  /**
-   * The logger the bot will use to log messages
-   */
-  logger: ILogger;
   /**
    * The intents the bot will subscribe to
    */
@@ -50,9 +52,9 @@ export abstract class BotBase {
    * @param props The constructor props
    */
   constructor(props: BotBaseProps) {
-    this.logger = props.logger;
     this.token = props.token;
     this.name = props.name;
+    this.logger = new NamedLogger(props.name);
 
     let client: Discord.Client;
     try {
@@ -60,7 +62,7 @@ export abstract class BotBase {
         intents: new IntentsBitField(props.intents),
       });
     } catch (err) {
-      this.logger.error(`failed to create client for ${this.name}`);
+      this.logger.error("failed to create client");
       this.logger.error((err as Error).message);
       throw err;
     }
@@ -68,7 +70,7 @@ export abstract class BotBase {
     this.client = client;
 
     client.on("ready", () => {
-      this.logger.log(`${this.name} logged in successfully`);
+      this.logger.log("logged in successfully");
       this.id = this.id = client.user?.id;
     });
   }
@@ -79,12 +81,34 @@ export abstract class BotBase {
    */
   login() {
     try {
-      this.logger.log(`logging in as ${this.name}`);
       this.client.login(this.token);
       this.loggedIn = true;
     } catch (err) {
-      this.logger.error(`failed to log in as ${this.name}`);
+      this.logger.error("failed to log in");
       this.logger.error((err as Error).message);
+    }
+  }
+
+  /**
+   * Send a message to a channel, with error handling
+   * @param message
+   * @param channel the channel to send to
+   * @returns true if successful, false otherwise
+   */
+  sendMessage(message: string, channel: TextBasedChannel): boolean {
+    try {
+      channel.send(message);
+
+      if (channel.type === ChannelType.DM) {
+        this.logger.log("posted a message to a users DMs");
+      } else {
+        this.logger.log(`posted a message in #${channel.name}`);
+      }
+      return true;
+    } catch (err) {
+      this.logger.error("failed to post message");
+      this.logger.error((err as Error).message);
+      return false;
     }
   }
 
