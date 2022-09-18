@@ -7,7 +7,6 @@ import {
   Collection,
   MessageMentions,
 } from "discord.js";
-import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
 
 const intents: GatewayIntentBits[] = [
@@ -21,10 +20,6 @@ interface WordCounterProps {
    * The token the bot will use to log in
    */
   token: string;
-  /**
-   * The logger the bot will use to log messages
-   */
-  logger: ILogger;
 }
 
 const userMentionRegex = new RegExp(MessageMentions.UsersPattern.source, "g");

@@ -32,7 +32,7 @@ export class Program {
     const ratBotToken = settings.ratBot?.token;
 
     if (ratBotToken) {
-      new RatBot({ token: ratBotToken, logger });
+      new RatBot({ token: ratBotToken });
     } else {
       logger.warn("no RatBot token found");
     }
@@ -44,7 +44,6 @@ export class Program {
       new WeatherBot({
         token: weatherBotToken,
         weatherKey: weatherAPIToken,
-        logger,
       });
     } else {
       logger.warn("no WeatherBot token found");
@@ -55,7 +54,6 @@ export class Program {
     if (wordCounterToken) {
       new WordCounter({
         token: wordCounterToken,
-        logger,
       });
     } else {
       logger.warn("no WordCounter token found");

@@ -1,6 +1,7 @@
 import { ILogger } from "../Logger/ILogger";
 
 import Discord, { GatewayIntentBits, IntentsBitField } from "discord.js";
+import { NamedLogger } from "../Logger/NamedLogger";
 
 export type BotBaseProps = {
   /**
@@ -11,10 +12,6 @@ export type BotBaseProps = {
    * The token the bot will use to log in
    */
   token: string;
-  /**
-   * The logger the bot will use to log messages
-   */
-  logger: ILogger;
   /**
    * The intents the bot will subscribe to
    */
@@ -50,9 +47,9 @@ export abstract class BotBase {
    * @param props The constructor props
    */
   constructor(props: BotBaseProps) {
-    this.logger = props.logger;
     this.token = props.token;
     this.name = props.name;
+    this.logger = new NamedLogger(props.name);
 
     let client: Discord.Client;
     try {

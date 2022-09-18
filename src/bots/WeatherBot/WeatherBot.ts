@@ -23,10 +23,6 @@ interface WeatherBotProps {
    */
   token: string;
   weatherKey: string;
-  /**
-   * The logger the bot will use to log messages
-   */
-  logger: ILogger;
 }
 
 export class WeatherBot extends BotBase {

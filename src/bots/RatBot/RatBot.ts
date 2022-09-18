@@ -4,7 +4,6 @@ import {
   IntentsBitField,
   Message,
 } from "discord.js";
-import { ILogger } from "../../Logger/ILogger";
 import { BotBase } from "../BotBase";
 
 const regex = /\brat\b/i;
@@ -20,10 +19,6 @@ interface RatBotProps {
    * The token the bot will use to log in
    */
   token: string;
-  /**
-   * The logger the bot will use to log messages
-   */
-  logger: ILogger;
 }
 
 /**
