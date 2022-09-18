@@ -62,7 +62,7 @@ export abstract class BotBase {
         intents: new IntentsBitField(props.intents),
       });
     } catch (err) {
-      this.logger.error(`failed to create client for ${this.name}`);
+      this.logger.error("failed to create client");
       this.logger.error((err as Error).message);
       throw err;
     }
@@ -70,7 +70,7 @@ export abstract class BotBase {
     this.client = client;
 
     client.on("ready", () => {
-      this.logger.log(`${this.name} logged in successfully`);
+      this.logger.log("logged in successfully");
       this.id = this.id = client.user?.id;
     });
   }
@@ -81,11 +81,10 @@ export abstract class BotBase {
    */
   login() {
     try {
-      this.logger.log(`logging in as ${this.name}`);
       this.client.login(this.token);
       this.loggedIn = true;
     } catch (err) {
-      this.logger.error(`failed to log in as ${this.name}`);
+      this.logger.error("failed to log in");
       this.logger.error((err as Error).message);
     }
   }
@@ -101,13 +100,13 @@ export abstract class BotBase {
       channel.send(message);
 
       if (channel.type === ChannelType.DM) {
-        this.logger.log("posted a reply to a user in DMs");
+        this.logger.log("posted a message to a users DMs");
       } else {
-        this.logger.log(`posted a reply in ${channel.name}`);
+        this.logger.log(`posted a message in ${channel.name}`);
       }
       return true;
     } catch (err) {
-      this.logger.error("failed to post reply");
+      this.logger.error("failed to post message");
       this.logger.error((err as Error).message);
       return false;
     }
