@@ -33,6 +33,7 @@ export class MessageFetcher {
       // get previous 100 messages
       const messages = (await channel.messages.fetch({
         limit: 100,
+        before: startFromMessage.id,
       })) as Collection<string, Message>;
 
       // add all valid items to all messages
@@ -42,7 +43,7 @@ export class MessageFetcher {
           .values()
       );
 
-      // get new limit message
+      // get new earliest message
       startFromMessage = messages.last();
     }
 
