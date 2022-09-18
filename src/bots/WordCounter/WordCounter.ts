@@ -92,9 +92,9 @@ export class WordCounter extends BotBase {
   ): Promise<string> {
     // make a limit of 7 days
     const dateLimit = new Date();
-    dateLimit.setDate(dateLimit.getDate() - 7);
+    dateLimit.setDate(dateLimit.getDate() - 30);
 
-    const messages = await MessageFetcher.getAllMessages(
+    const { messages, totalParsed } = await MessageFetcher.getAllMessages(
       message.channel as TextChannel,
       (m) => WordCounter.checkMessage(m, request, myId),
       dateLimit
@@ -103,11 +103,11 @@ export class WordCounter extends BotBase {
     if (message.channel.type === ChannelType.DM) {
       return `There are ${
         messages.length
-      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} in our correspondence.`;
+      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} (${totalParsed} messages) in our correspondence.`;
     } else {
       return `There are ${
         messages.length
-      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} in #${message.channel.toString()}`;
+      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} (${totalParsed} messages) in ${message.channel.toString()}`;
     }
   }
 }

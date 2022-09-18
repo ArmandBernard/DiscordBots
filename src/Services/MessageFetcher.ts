@@ -1,12 +1,18 @@
 import { Collection, Message, TextChannel } from "discord.js";
 
+interface GetMessagesResults {
+  messages: Message[];
+  totalParsed: number;
+}
+
 export class MessageFetcher {
   static async getAllMessages(
     channel: TextChannel,
     condition: (message: Message) => boolean,
     dateLimit: Date
-  ): Promise<Message[]> {
+  ): Promise<GetMessagesResults> {
     let allMessages: Message[] = [];
+    let totalParsed = 0;
 
     // get first message
     let startFromMessage = (
@@ -17,7 +23,7 @@ export class MessageFetcher {
 
     // return early if there are somehow no messages found
     if (!startFromMessage) {
-      return [];
+      return { messages: [], totalParsed: 0 };
     }
 
     // if condition applies and we are not past date limit, add to array
@@ -36,6 +42,8 @@ export class MessageFetcher {
         before: startFromMessage.id,
       })) as Collection<string, Message>;
 
+      totalParsed += messages.size;
+
       // add all valid items to all messages
       allMessages = allMessages.concat(
         ...messages
@@ -47,6 +55,6 @@ export class MessageFetcher {
       startFromMessage = messages.last();
     }
 
-    return allMessages;
+    return { messages: allMessages, totalParsed };
   }
 }
