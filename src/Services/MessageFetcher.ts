@@ -42,7 +42,7 @@ export class MessageFetcher {
         before: startFromMessage.id,
       })) as Collection<string, Message>;
 
-      totalParsed += messages.size;
+      totalParsed += messages.filter((m) => m.createdAt > dateLimit).size;
 
       // add all valid items to all messages
       allMessages = allMessages.concat(
