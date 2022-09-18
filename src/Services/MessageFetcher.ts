@@ -6,10 +6,19 @@ interface GetMessagesResults {
 }
 
 export class MessageFetcher {
+  /**
+   * Return all messages from a channel within certain conditions. Will be slow when handling more
+   * than a few hundred messages, as multiple API calls are needed.
+   * @param channel The channel to fetch from
+   * @param dateLimit The oldest date to return messages from
+   * @param filterPredicate (optional) A filter predicate which decides which messages to include.
+   * More memory efficient than filtering after receiving results.
+   * @returns the filtered messages
+   */
   static async getAllMessages(
     channel: TextBasedChannel,
-    condition: (message: Message) => boolean,
-    dateLimit: Date
+    dateLimit: Date,
+    filterPredicate?: (message: Message) => boolean
   ): Promise<GetMessagesResults> {
     let allMessages: Message[] = [];
     let totalParsed = 0;
@@ -28,8 +37,9 @@ export class MessageFetcher {
 
     // if condition applies and we are not past date limit, add to array
     if (
-      condition(startFromMessage) &&
-      startFromMessage.createdAt >= dateLimit
+      !filterPredicate ||
+      (filterPredicate(startFromMessage) &&
+        startFromMessage.createdAt >= dateLimit)
     ) {
       allMessages = allMessages.concat([startFromMessage]);
     }
@@ -47,7 +57,11 @@ export class MessageFetcher {
       // add all valid items to all messages
       allMessages = allMessages.concat(
         ...messages
-          .filter((m) => condition(m) && m.createdAt > dateLimit)
+          .filter(
+            (m) =>
+              (!filterPredicate || filterPredicate(m)) &&
+              m.createdAt > dateLimit
+          )
           .values()
       );
 

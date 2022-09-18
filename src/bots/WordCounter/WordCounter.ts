@@ -124,8 +124,8 @@ export class WordCounter extends BotBase {
 
     const { messages, totalParsed } = await MessageFetcher.getAllMessages(
       message.channel,
-      (m) => WordCounter.checkMessage(m, request, myId),
-      dateLimit
+      dateLimit,
+      (m) => WordCounter.checkMessage(m, request, myId)
     );
 
     if (message.channel.type === ChannelType.DM) {
