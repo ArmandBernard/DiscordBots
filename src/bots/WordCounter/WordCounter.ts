@@ -4,7 +4,7 @@ import {
   Message,
   ChannelType,
   MessageMentions,
-  TextChannel,
+  TextBasedChannel,
 } from "discord.js";
 import { MessageFetcher } from "../../Services/MessageFetcher";
 import { BotBase } from "../BotBase";
@@ -44,19 +44,11 @@ export class WordCounter extends BotBase {
         // parse their request
         const request = WordCounter.parseRequest(message.content);
 
-        let sentMessage: Message | undefined;
-
-        if (message.channel.type === ChannelType.DM) {
-          sentMessage = await this.sendMessage(
-            `Looking for the word(s) "${request}" in the last year of messages in these DMs...`,
-            message.channel
-          );
-        } else {
-          sentMessage = await this.sendMessage(
-            `Looking for the word(s) "${request}" in the last year of messages in ${message.channel.toString()}...`,
-            message.channel
-          );
-        }
+        // tell the user to wait
+        const sentMessage = await this.sendSearchingMessage(
+          request,
+          message.channel
+        );
 
         if (!sentMessage) {
           return;
@@ -82,6 +74,33 @@ export class WordCounter extends BotBase {
 
   static escapeRegex(str: string) {
     return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+  }
+
+  /**
+   * Tell the user to wait while we get check the messages
+   * @param request what the user is after
+   * @param channel the channel we're searching through
+   * @returns the sent message, so it can be edited later
+   */
+  async sendSearchingMessage(
+    request: string,
+    channel: TextBasedChannel
+  ): Promise<Message<boolean> | undefined> {
+    let sentMessage: Message | undefined;
+
+    if (channel.type === ChannelType.DM) {
+      sentMessage = await this.sendMessage(
+        `Looking for the word(s) "${request}" in the last year of messages in these DMs...`,
+        channel
+      );
+    } else {
+      sentMessage = await this.sendMessage(
+        `Looking for the word(s) "${request}" in the last year of messages in ${channel.toString()}...`,
+        channel
+      );
+    }
+
+    return sentMessage;
   }
 
   // filter out messages not containing the words
@@ -114,7 +133,7 @@ export class WordCounter extends BotBase {
     dateLimit.setDate(dateLimit.getDate() - 365);
 
     const { messages, totalParsed } = await MessageFetcher.getAllMessages(
-      message.channel as TextChannel,
+      message.channel,
       (m) => WordCounter.checkMessage(m, request, myId),
       dateLimit
     );

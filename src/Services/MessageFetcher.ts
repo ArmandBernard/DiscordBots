@@ -1,4 +1,4 @@
-import { Collection, Message, TextChannel } from "discord.js";
+import { Collection, Message, TextBasedChannel } from "discord.js";
 
 interface GetMessagesResults {
   messages: Message[];
@@ -7,7 +7,7 @@ interface GetMessagesResults {
 
 export class MessageFetcher {
   static async getAllMessages(
-    channel: TextChannel,
+    channel: TextBasedChannel,
     condition: (message: Message) => boolean,
     dateLimit: Date
   ): Promise<GetMessagesResults> {
