@@ -86,21 +86,11 @@ export class WordCounter extends BotBase {
     request: string,
     channel: TextBasedChannel
   ): Promise<Message<boolean> | undefined> {
-    let sentMessage: Message | undefined;
+    const messageText = `Looking for the word(s) "${request}" in the last year of messages in ${
+      channel.type === ChannelType.DM ? "these DMs" : channel.toString()
+    }...`;
 
-    if (channel.type === ChannelType.DM) {
-      sentMessage = await this.sendMessage(
-        `Looking for the word(s) "${request}" in the last year of messages in these DMs...`,
-        channel
-      );
-    } else {
-      sentMessage = await this.sendMessage(
-        `Looking for the word(s) "${request}" in the last year of messages in ${channel.toString()}...`,
-        channel
-      );
-    }
-
-    return sentMessage;
+    return await this.sendMessage(messageText, channel);
   }
 
   // filter out messages not containing the words
