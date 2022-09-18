@@ -1,9 +1,4 @@
-import {
-  ChannelType,
-  GatewayIntentBits,
-  IntentsBitField,
-  Message,
-} from "discord.js";
+import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { BotBase } from "../BotBase";
 
 const regex = /\brat\b/i;
@@ -38,31 +33,11 @@ export class RatBot extends BotBase {
       // if it contains rat
       if (RatBot.containsRat(message.content)) {
         // reply with the rat gif
-        this.replyWithGif(message);
+        this.sendMessage("https://i.imgur.com/KqvqLg3.gif", message.channel);
       }
     });
 
     this.login();
-  }
-
-  /**
-   * Reply to a user's message with a gif of a spinning rat
-   * @param message the message to reply to
-   */
-  replyWithGif(message: Message) {
-    try {
-      // post the rat gif
-      message.channel.send("https://i.imgur.com/KqvqLg3.gif");
-
-      if (message.channel.type !== ChannelType.DM) {
-        this.logger.log(`posted a reply in ${message.channel.name}`);
-      } else {
-        this.logger.log("posted a reply to a user in DMs");
-      }
-    } catch (err) {
-      this.logger.error("failed to post reply");
-      this.logger.error((err as Error).message);
-    }
   }
 
   /**

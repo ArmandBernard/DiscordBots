@@ -1,5 +1,4 @@
 import {
-  TextBasedChannel,
   GatewayIntentBits,
   IntentsBitField,
   Message,
@@ -46,26 +45,11 @@ export class WordCounter extends BotBase {
 
         const reply = await WordCounter.prepareReply(message, request, this.id);
 
-        this.sendReply(reply, message.channel);
+        this.sendMessage(reply, message.channel);
       }
     });
 
     this.login();
-  }
-
-  sendReply(reply: string, channel: TextBasedChannel) {
-    try {
-      channel.send(reply);
-
-      if (channel.type === ChannelType.DM) {
-        this.logger.log("posted a reply to a user in DMs");
-      } else {
-        this.logger.log(`posted a reply in ${channel.name}`);
-      }
-    } catch (err) {
-      this.logger.error("failed to post reply");
-      this.logger.error((err as Error).message);
-    }
   }
 
   static parseRequest(request: string): string {
