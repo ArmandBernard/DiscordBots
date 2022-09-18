@@ -1,6 +1,11 @@
 import { ILogger } from "../Logger/ILogger";
 
-import Discord, { GatewayIntentBits, IntentsBitField } from "discord.js";
+import Discord, {
+  ChannelType,
+  GatewayIntentBits,
+  IntentsBitField,
+  TextBasedChannel,
+} from "discord.js";
 import { NamedLogger } from "../Logger/NamedLogger";
 
 export type BotBaseProps = {
@@ -82,6 +87,29 @@ export abstract class BotBase {
     } catch (err) {
       this.logger.error(`failed to log in as ${this.name}`);
       this.logger.error((err as Error).message);
+    }
+  }
+
+  /**
+   * Send a message to a channel, with error handling
+   * @param message
+   * @param channel the channel to send to
+   * @returns true if successful, false otherwise
+   */
+  sendMessage(message: string, channel: TextBasedChannel): boolean {
+    try {
+      channel.send(message);
+
+      if (channel.type === ChannelType.DM) {
+        this.logger.log("posted a reply to a user in DMs");
+      } else {
+        this.logger.log(`posted a reply in ${channel.name}`);
+      }
+      return true;
+    } catch (err) {
+      this.logger.error("failed to post reply");
+      this.logger.error((err as Error).message);
+      return false;
     }
   }
 
