@@ -19,4 +19,3 @@ The following is upcoming:
 - Improvements to the WordCounter:
   - Count by person
   - Count of usages alongside count of messages
-  - Greater than 100 message history
