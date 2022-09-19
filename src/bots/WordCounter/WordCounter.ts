@@ -140,7 +140,7 @@ export class WordCounter extends BotBase {
       return reply;
     }
 
-    reply += "- User breakdown -\n";
+    reply += "\n- User breakdown -\n";
 
     // create a list of users and their count
     const userMap: Map<string, number> = new Map();
