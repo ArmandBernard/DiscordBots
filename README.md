@@ -17,5 +17,4 @@ The following bots are already working:
 The following is upcoming:
 
 - Improvements to the WordCounter:
-  - Count by person
   - Count of usages alongside count of messages
