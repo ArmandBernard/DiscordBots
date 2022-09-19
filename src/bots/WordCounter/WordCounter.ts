@@ -128,14 +128,34 @@ export class WordCounter extends BotBase {
       (m) => WordCounter.checkMessage(m, request, myId)
     );
 
-    if (message.channel.type === ChannelType.DM) {
-      return `There are ${
-        messages.length
-      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} (${totalParsed} messages) in our correspondence.`;
-    } else {
-      return `There are ${
-        messages.length
-      } messages containing "${request}" since ${dateLimit.toLocaleDateString()} (${totalParsed} messages) in ${message.channel.toString()}`;
+    let reply = `There are ${
+      messages.length
+    } messages containing "${request}" since ${dateLimit.toLocaleDateString()} (${totalParsed} messages) in ${
+      message.channel.type === ChannelType.DM
+        ? "our correspondence"
+        : message.channel.toString()
+    }.`;
+
+    if (messages.length === 0) {
+      return reply;
     }
+
+    reply += "\n- User breakdown -\n";
+
+    // create a list of users and their count
+    const userMap: Map<string, number> = new Map();
+
+    messages.forEach((m) => {
+      // increment the count if it exists, or set it to 0 if not
+      userMap.set(m.author.username, (userMap.get(m.author.username) ?? 0) + 1);
+    });
+
+    // add per-user counts to string
+    reply += [...userMap.entries()]
+      .filter(([, count]) => count > 0)
+      .map(([author, count]) => `${author}: ${count}`)
+      .join("; ");
+
+    return reply;
   }
 }
