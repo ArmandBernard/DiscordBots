@@ -1,18 +1,38 @@
 import { RatBot } from "./RatBot";
 
-const validExamples = ["rat", " rat ", "You are a rat.", "RAT"];
-const invalidExamples = ["ratatouille", "drat"];
+const validRatExamples = ["rat", " rat ", "You are a rat.", "RAT"];
+const invalidRatExamples = ["ratatouille", "drat"];
+
+const validMonkeyExamples = [
+  "monkey",
+  " gorilla ",
+  "You are an ape.",
+  "GO APE",
+];
+const invalidMonkeyExamples = ["grape"];
 
 describe("RatBot's regex", () => {
   describe("finds 'rat' in", () => {
-    it.each(validExamples)("'%s'", (example) => {
+    it.each(validRatExamples)("'%s'", (example) => {
       expect(RatBot.containsRat(example)).toBe(true);
     });
   });
 
   describe("does not find rat in", () => {
-    it.each(invalidExamples)("'%s'", (example) => {
+    it.each(invalidRatExamples)("'%s'", (example) => {
       expect(!RatBot.containsRat(example)).toBe(true);
+    });
+  });
+
+  describe("finds monkey in", () => {
+    it.each(validMonkeyExamples)("'%s'", (example) => {
+      expect(RatBot.containsMonkey(example)).toBe(true);
+    });
+  });
+
+  describe("does not find monkey in", () => {
+    it.each(invalidMonkeyExamples)("'%s'", (example) => {
+      expect(RatBot.containsMonkey(example)).toBe(true);
     });
   });
 });

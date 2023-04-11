@@ -1,7 +1,8 @@
 import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { BotBase } from "../BotBase";
 
-const regex = /\brat\b/i;
+const ratRegex = /\brat\b/i;
+const monkeyRegex = /\b(monkey)|(ape)|(gorilla)\b/i;
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
@@ -34,6 +35,16 @@ export class RatBot extends BotBase {
       if (RatBot.containsRat(message.content)) {
         // reply with the rat gif
         this.sendMessage("https://i.imgur.com/KqvqLg3.gif", message.channel);
+        return;
+      }
+
+      if (RatBot.containsMonkey(message.content)) {
+        // reply with the monkey gif
+        this.sendMessage(
+          "https://media.tenor.com/eUOiCZiskd8AAAAC/monkey-spinning-holding-hands.gif",
+          message.channel
+        );
+        return;
       }
     });
 
@@ -43,9 +54,16 @@ export class RatBot extends BotBase {
   /**
    * Check if the message contains "rat"
    * @param message the message to check
-   * @returns true if the message contains "rat"
    */
   static containsRat(message: string): boolean {
-    return regex.exec(message) != null;
+    return ratRegex.exec(message) != null;
+  }
+
+  /**
+   * Check if the message contains some sort of monkey
+   * @param message the message to check
+   */
+  static containsMonkey(message: string): boolean {
+    return monkeyRegex.exec(message) != null;
   }
 }
