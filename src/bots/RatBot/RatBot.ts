@@ -31,6 +31,11 @@ export class RatBot extends BotBase {
 
     // when a message is created
     this.client.on("messageCreate", (message) => {
+      // don't do anything if this bot is the sender or message does not contain keyword
+      if (message.author.id === this.id) {
+        return;
+      }
+
       // if it contains rat
       if (RatBot.containsRat(message.content)) {
         // reply with the rat gif
