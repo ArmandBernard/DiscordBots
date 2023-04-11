@@ -31,7 +31,7 @@ export class RatBot extends BotBase {
     });
 
     // when a message is created
-    this.client.on("messageCreate", (message) => {
+    this.client.on("messageCreate", async (message) => {
       // don't do anything if this bot is the sender or message does not contain keyword
       if (message.author.id === this.id) {
         return;
@@ -40,23 +40,26 @@ export class RatBot extends BotBase {
       // if it contains rat
       if (RatBot.containsRat(message.content)) {
         // reply with the rat gif
-        this.sendMessage("https://i.imgur.com/KqvqLg3.gif", message.channel);
-        return;
+        await this.sendMessage(
+          "https://i.imgur.com/KqvqLg3.gif",
+          message.channel
+        );
       }
 
       if (RatBot.containsMonkey(message.content)) {
         // reply with the monkey gif
-        this.sendMessage(
+        await this.sendMessage(
           "https://media.tenor.com/eUOiCZiskd8AAAAC/monkey-spinning-holding-hands.gif",
           message.channel
         );
-        return;
       }
 
       if (RatBot.containsGoblin(message.content)) {
         // reply with the goblin gif
-        this.sendMessage("https://i.imgur.com/ZVyjxzN.gif", message.channel);
-        return;
+        await this.sendMessage(
+          "https://i.imgur.com/ZVyjxzN.gif",
+          message.channel
+        );
       }
     });
 
