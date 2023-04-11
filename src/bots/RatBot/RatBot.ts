@@ -53,7 +53,7 @@ export class RatBot extends BotBase {
         return;
       }
 
-      if (RatBot.containsMonkey(message.content)) {
+      if (RatBot.containsGoblin(message.content)) {
         // reply with the goblin gif
         this.sendMessage("https://i.imgur.com/ZVyjxzN.gif", message.channel);
         return;
