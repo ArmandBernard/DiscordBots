@@ -2,7 +2,8 @@ import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { BotBase } from "../BotBase";
 
 const ratRegex = /\brat\b/i;
-const monkeyRegex = /\b(monkey)|(ape)|(gorilla)\b/i;
+const monkeyRegex = /\b(monkey|ape|gorilla)\b/i;
+const goblinRegex = /\b(goblin|fuling|gremlin)\b/i;
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
@@ -51,6 +52,12 @@ export class RatBot extends BotBase {
         );
         return;
       }
+
+      if (RatBot.containsMonkey(message.content)) {
+        // reply with the goblin gif
+        this.sendMessage("https://i.imgur.com/ZVyjxzN.gif", message.channel);
+        return;
+      }
     });
 
     this.login();
@@ -70,5 +77,13 @@ export class RatBot extends BotBase {
    */
   static containsMonkey(message: string): boolean {
     return monkeyRegex.exec(message) != null;
+  }
+
+  /**
+   * Check if the message contains some sort of goblin
+   * @param message the message to check
+   */
+  static containsGoblin(message: string): boolean {
+    return goblinRegex.exec(message) != null;
   }
 }
