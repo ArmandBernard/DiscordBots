@@ -1,10 +1,11 @@
 import { RatBot } from "./RatBot";
 
-const validRatExamples = ["rat", " rat ", "You are a rat.", "RAT"];
+const validRatExamples = ["rat", "rats", " rat ", "You are a rat.", "RAT"];
 const invalidRatExamples = ["ratatouille", "drat"];
 
 const validMonkeyExamples = [
   "monkey",
+  "monkeys",
   " gorilla ",
   "You are an ape.",
   "GO APE",
@@ -13,6 +14,7 @@ const invalidMonkeyExamples = ["grape"];
 
 const validGoblinExamples = [
   "goblin",
+  "goblins",
   " fuling ",
   "You are a gremlin.",
   "GOBLIN",

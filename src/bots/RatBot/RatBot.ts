@@ -1,9 +1,9 @@
 import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { BotBase } from "../BotBase";
 
-const ratRegex = /\brat\b/i;
-const monkeyRegex = /\b(monkey|ape|gorilla)\b/i;
-const goblinRegex = /\b(goblin|fuling|gremlin)\b/i;
+const ratRegex = /\brat(s?)\b/i;
+const monkeyRegex = /\b(monkey(s?)|ape(s?)|gorilla(s?))\b/i;
+const goblinRegex = /\b(goblin(s?)|fuling(s?)|gremlin(s?))\b/i;
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
