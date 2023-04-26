@@ -2,7 +2,7 @@ import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { BotBase } from "../BotBase";
 
 const ratRegex = /\brat(s?)\b/i;
-const catRegex = /\b(cat(s?)|chat(s?))b/i;
+const catRegex = /\b(cat(s?)|chat(s?))\b/i;
 const monkeyRegex = /\b(monkey(s?)|ape(s?)|gorilla(s?))\b/i;
 const goblinRegex = /\b(goblin(s?)|fuling(s?)|gremlin(s?))\b/i;
 
