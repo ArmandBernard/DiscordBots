@@ -3,6 +3,9 @@ import { RatBot } from "./RatBot";
 const validRatExamples = ["rat", "rats", " rat ", "You are a rat.", "RAT"];
 const invalidRatExamples = ["ratatouille", "drat"];
 
+const validCatExamples = ["cat", "cats", " chat ", "Join the chat.", "CHAT"];
+const invalidCatExamples = ["catastrophic", "catch"];
+
 const validMonkeyExamples = [
   "monkey",
   "monkeys",
@@ -31,6 +34,18 @@ describe("RatBot's regex", () => {
   describe("does not find rat in", () => {
     it.each(invalidRatExamples)("'%s'", (example) => {
       expect(!RatBot.containsRat(example)).toBe(true);
+    });
+  });
+
+  describe("finds cat in", () => {
+    it.each(validCatExamples)("'%s'", (example) => {
+      expect(RatBot.containsCat(example)).toBe(true);
+    });
+  });
+
+  describe("does not find cat in", () => {
+    it.each(invalidCatExamples)("'%s'", (example) => {
+      expect(!RatBot.containsCat(example)).toBe(true);
     });
   });
 
