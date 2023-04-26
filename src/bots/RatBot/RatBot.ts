@@ -2,6 +2,7 @@ import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { BotBase } from "../BotBase";
 
 const ratRegex = /\brat(s?)\b/i;
+const catRegex = /\b(cat(s?)|chat(s?))b/i;
 const monkeyRegex = /\b(monkey(s?)|ape(s?)|gorilla(s?))\b/i;
 const goblinRegex = /\b(goblin(s?)|fuling(s?)|gremlin(s?))\b/i;
 
@@ -46,6 +47,15 @@ export class RatBot extends BotBase {
         );
       }
 
+      // if it contains rat
+      if (RatBot.containsCat(message.content)) {
+        // reply with the rat gif
+        await this.sendMessage(
+          "https://media.tenor.com/0EDznml5BDAAAAAi/cat-spinning.gif",
+          message.channel
+        );
+      }
+
       if (RatBot.containsMonkey(message.content)) {
         // reply with the monkey gif
         await this.sendMessage(
@@ -72,6 +82,14 @@ export class RatBot extends BotBase {
    */
   static containsRat(message: string): boolean {
     return ratRegex.exec(message) != null;
+  }
+
+  /**
+   * Check if the message contains "rat"
+   * @param message the message to check
+   */
+  static containsCat(message: string): boolean {
+    return catRegex.exec(message) != null;
   }
 
   /**
