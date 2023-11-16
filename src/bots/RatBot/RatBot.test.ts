@@ -24,6 +24,15 @@ const validGoblinExamples = [
 ];
 const invalidGoblinExamples = ["GOBLINT"];
 
+const validAubergineExamples = [
+  "aubergine",
+  "AUBERGINES ",
+  "Nice cock.",
+  "CUM",
+  "eggplant",
+];
+const invalidAubergineExamples = ["Cockerel"];
+
 describe("RatBot's regex", () => {
   describe("finds 'rat' in", () => {
     it.each(validRatExamples)("'%s'", (example) => {
@@ -70,6 +79,18 @@ describe("RatBot's regex", () => {
   describe("does not find goblin in", () => {
     it.each(invalidGoblinExamples)("'%s'", (example) => {
       expect(!RatBot.containsGoblin(example)).toBe(true);
+    });
+  });
+
+  describe("finds aubergine in", () => {
+    it.each(validAubergineExamples)("'%s'", (example) => {
+      expect(RatBot.containsAubergine(example)).toBe(true);
+    });
+  });
+
+  describe("does not find aubergine in", () => {
+    it.each(invalidAubergineExamples)("'%s'", (example) => {
+      expect(!RatBot.containsAubergine(example)).toBe(true);
     });
   });
 });
