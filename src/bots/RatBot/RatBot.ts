@@ -1,10 +1,12 @@
 import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { BotBase } from "../BotBase";
 
-const ratRegex = /\brat(s?)\b/i;
-const catRegex = /\b(cat(s?)|chat(s?))\b/i;
-const monkeyRegex = /\b(monkey(s?)|ape(s?)|gorilla(s?))\b/i;
-const goblinRegex = /\b(goblin(s?)|fuling(s?)|gremlin(s?))\b/i;
+const ratRegex = /\brat(s)?\b/i;
+const catRegex = /\b(cat(s)?|chat(s)?)\b/i;
+const monkeyRegex = /\b(monkey(s)?|ape(s)?|gorilla(s)?)\b/i;
+const goblinRegex = /\b(goblin(s)?|fuling(s)?|gremlin(s)?)\b/i;
+const aubergineRegex =
+  /\b(aubergine(s)?|eggplant(s)?|cum(ming)?|cock(s)?|penis|dick(s)?)\b/i;
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
@@ -71,6 +73,14 @@ export class RatBot extends BotBase {
           message.channel
         );
       }
+
+      if (RatBot.containsAubergine(message.content)) {
+        // reply with the aubergine gif
+        await this.sendMessage(
+          "https://static.wixstatic.com/media/9d75dd_7ac986aac0c244a9b5f8502853d5ef8a~mv2.gif",
+          message.channel
+        );
+      }
     });
 
     this.login();
@@ -106,5 +116,13 @@ export class RatBot extends BotBase {
    */
   static containsGoblin(message: string): boolean {
     return goblinRegex.exec(message) != null;
+  }
+
+  /**
+   * Check if the message contains some sort of uh... aubergine
+   * @param message the message to check
+   */
+  static containsAubergine(message: string): boolean {
+    return aubergineRegex.exec(message) != null;
   }
 }
