@@ -33,6 +33,9 @@ const validAubergineExamples = [
 ];
 const invalidAubergineExamples = ["Cockerel"];
 
+const validNightxamples = ["night", "NIGHT ", " Tonight "];
+const invalidNightExamples = ["knight"];
+
 describe("RatBot's regex", () => {
   describe("finds 'rat' in", () => {
     it.each(validRatExamples)("'%s'", (example) => {
@@ -91,6 +94,18 @@ describe("RatBot's regex", () => {
   describe("does not find aubergine in", () => {
     it.each(invalidAubergineExamples)("'%s'", (example) => {
       expect(!RatBot.containsAubergine(example)).toBe(true);
+    });
+  });
+
+  describe("finds night in", () => {
+    it.each(validNightxamples)("'%s'", (example) => {
+      expect(RatBot.containsNight(example)).toBe(true);
+    });
+  });
+
+  describe("does not find night in", () => {
+    it.each(invalidNightExamples)("'%s'", (example) => {
+      expect(!RatBot.containsNight(example)).toBe(true);
     });
   });
 });
