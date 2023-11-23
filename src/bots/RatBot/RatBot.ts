@@ -7,6 +7,7 @@ const monkeyRegex = /\b(monkey(s)?|ape(s)?|gorilla(s)?)\b/i;
 const goblinRegex = /\b(goblin(s)?|fuling(s)?|gremlin(s)?)\b/i;
 const aubergineRegex =
   /\b(aubergine(s)?|eggplant(s)?|cum(ming)?|cock(s)?|penis|dick(s)?)\b/i;
+const nightRegex = /\b(night(s)?|tonight)\b/i;
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
@@ -81,6 +82,14 @@ export class RatBot extends BotBase {
           message.channel
         );
       }
+
+      if (RatBot.containsNight(message.content)) {
+        // reply with the "day n nite" gif
+        await this.sendMessage(
+          "https://media.tenor.com/_LuODEszm_wAAAAC/kid-cudi-day-n-night.gif",
+          message.channel
+        );
+      }
     });
 
     this.login();
@@ -124,5 +133,13 @@ export class RatBot extends BotBase {
    */
   static containsAubergine(message: string): boolean {
     return aubergineRegex.exec(message) != null;
+  }
+
+  /**
+   * Check if the message contains "night"
+   * @param message the message to check
+   */
+  static containsNight(message: string): boolean {
+    return nightRegex.exec(message) != null;
   }
 }
