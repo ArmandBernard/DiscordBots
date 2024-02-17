@@ -1,13 +1,13 @@
 import { GatewayIntentBits, IntentsBitField } from "discord.js";
 import { BotBase } from "../BotBase";
 
-const ratRegex = /\brat(s)?\b/i;
-const catRegex = /\b(cat(s)?|chat(s)?)\b/i;
-const monkeyRegex = /\b(monkey(s)?|ape(s)?|gorilla(s)?)\b/i;
-const goblinRegex = /\b(goblin(s)?|fuling(s)?|gremlin(s)?)\b/i;
+const ratRegex = /\[\brat(s)?\b\]/i;
+const catRegex = /\[\b(cat(s)?|chat(s)?)\b\]/i;
+const monkeyRegex = /\[\b(monkey(s)?|ape(s)?|gorilla(s)?)\b\]/i;
+const goblinRegex = /\[\b(goblin(s)?|fuling(s)?|gremlin(s)?)\b\]/i;
 const aubergineRegex =
-  /\b(aubergine(s)?|eggplant(s)?|cum(ming)?|cock(s)?|penis|dick(s)?)\b/i;
-const nightRegex = /\b(night(s)?|tonight)\b/i;
+  /\[\b(aubergine(s)?|eggplant(s)?|cum(ming)?|cock(s)?|penis|dick(s)?)\b\]/i;
+const nightRegex = /\[\b(night(s)?|tonight)\b\]/i;
 
 const intents: GatewayIntentBits[] = [
   IntentsBitField.Flags.Guilds,
