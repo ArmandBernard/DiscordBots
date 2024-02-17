@@ -1,39 +1,51 @@
 import { RatBot } from "./RatBot";
 
-const validRatExamples = ["rat", "rats", " rat ", "You are a rat.", "RAT"];
+const validRatExamples = [
+  "[rat]",
+  "[rats]",
+  " [rat] ",
+  "You are a [rat].",
+  "[RAT]",
+];
 const invalidRatExamples = ["ratatouille", "drat"];
 
-const validCatExamples = ["cat", "cats", " chat ", "Join the chat.", "CHAT"];
+const validCatExamples = [
+  "[cat]",
+  "[cats]",
+  " [chat] ",
+  "Join the [chat].",
+  "[CHAT]",
+];
 const invalidCatExamples = ["catastrophic", "catch"];
 
 const validMonkeyExamples = [
-  "monkey",
-  "monkeys",
-  " gorilla ",
-  "You are an ape.",
-  "GO APE",
+  "[monkey]",
+  "[monkey]s",
+  " [gorilla] ",
+  "You are an [ape].",
+  "GO [APE]",
 ];
 const invalidMonkeyExamples = ["grape"];
 
 const validGoblinExamples = [
-  "goblin",
-  "goblins",
-  " fuling ",
-  "You are a gremlin.",
-  "GOBLIN",
+  "[goblin]",
+  "[goblins]",
+  " [fuling] ",
+  "You are a [gremlin].",
+  "[GOBLIN]",
 ];
 const invalidGoblinExamples = ["GOBLINT"];
 
 const validAubergineExamples = [
-  "aubergine",
-  "AUBERGINES ",
-  "Nice cock.",
-  "CUM",
-  "eggplant",
+  "[aubergine]",
+  "[AUBERGINES] ",
+  "Nice [cock].",
+  "[CUM]",
+  "[eggplant]",
 ];
 const invalidAubergineExamples = ["Cockerel"];
 
-const validNightxamples = ["night", "NIGHT ", " Tonight "];
+const validNightxamples = ["[night]", "[NIGHT] ", " [Tonight] "];
 const invalidNightExamples = ["knight"];
 
 describe("RatBot's regex", () => {
